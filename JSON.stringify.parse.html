@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="Generator" content="EditPlus®,Microshaoft®">
+	<meta name="Author" content="EditPlus®,Microshaoft®">
+	<meta name="Keywords" content="EditPlus®,Microshaoft®">
+	<meta name="Description" content="EditPlus®,Microshaoft®">
+	<title>Document</title>
+</head>
+<body>
+<script type="text/javascript">
+<!--
+	var x = {
+		a: function(x) {
+			return x * 100;
+		},
+		b: "adssads"
+	};
+	var s = JSON.stringify(
+				x,
+				function(k, v) {
+					if (typeof v === 'function') {
+						return v + '';
+					}
+					return v;
+				}
+			
+			);
+	alert(s);
+
+	var xx = JSON.parse(
+				s,
+				function(k, v) {
+					if (v.indexOf && v.indexOf('function') > -1) {
+						return eval("(function() { return " + v + "})()");
+					}
+					return v;
+				}
+			);
+	alert(xx.a(2));
+//-->
+</script>
+</body>
+</html>
