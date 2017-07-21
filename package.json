@@ -1,14 +1,102 @@
-{ 
-   "name": "Demo", 
-   "version": "1.0.0", 
-   "description": "demo project.", 
-   "scripts": { 
-     "lite": "lite-server --port 10001", 
-     "start": "npm run lite" 
-   }, 
-   "author": "", 
-   "license": "ISC", 
-   "devDependencies": { 
-     "lite-server": "^1.3.1" 
-   } 
+{
+  "name": "iis-express",
+  "displayName": "IIS Express",
+  "description": "This allows you to run the current folder as a website in IIS Express",
+  "version": "1.0.0",
+  "publisher": "warren-buckley",
+  "icon": "images/iis-icon.png",
+  "galleryBanner": {
+    "color": "#007acc",
+    "theme": "dark"
+  },
+  "keywords": [
+    "IIS",
+    "IIS Express",
+    "Web Server"
+  ],
+  "bugs": {
+    "url": "https://github.com/warrenbuckley/IIS-Express-Code/issues",
+    "email": ""
+  },
+  "homepage": "https://github.com/warrenbuckley/IIS-Express-Code",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/warrenbuckley/IIS-Express-Code.git"
+  },
+  "engines": {
+    "vscode": "^0.10.1"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:extension.iis-express.start",
+    "onCommand:extension.iis-express.stop",
+    "onCommand:extension.iis-express.open",
+    "onCommand:extension.iis-express.restart"
+  ],
+  "main": "./out/src/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.iis-express.start",
+        "title": "IIS Express: Start Website"
+      },
+      {
+        "command": "extension.iis-express.stop",
+        "title": "IIS Express: Stop Website"
+      },
+      {
+        "command": "extension.iis-express.restart",
+        "title": "IIS Express: Restart Website"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "extension.iis-express.start",
+        "key": "ctrl+f5"
+      },
+      {
+        "command": "extension.iis-express.stop",
+        "key": "shift+f5"
+      },
+      {
+        "command": "extension.iis-express.restart",
+        "key": "ctrl+shift+f5"
+      }
+    ],
+    "jsonValidation": [
+      {
+        "fileMatch": "/.vscode/iisexpress.json",
+        "url": "https://raw.githubusercontent.com/warrenbuckley/IIS-Express-Code/master/src/iisexpress-schema.json"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+    "compile": "node ./node_modules/vscode/bin/compile -watch -p ./"
+  },
+  "devDependencies": {
+    "typescript": "^1.6.2",
+    "vscode": "0.10.x"
+  },
+  "dependencies": {
+    "iconv-lite": "^0.4.13",
+    "jsonfile": "^2.2.3",
+    "uuid": "^3.0.1"
+  }
 }
+// { 
+//    "name": "Demo", 
+//    "version": "1.0.0", 
+//    "description": "demo project.", 
+//    "scripts": { 
+//      "lite": "lite-server --port 10001", 
+//      "start": "npm run lite" 
+//    }, 
+//    "author": "", 
+//    "license": "ISC", 
+//    "devDependencies": { 
+//      "lite-server": "^1.3.1" 
+//    } 
+// }
