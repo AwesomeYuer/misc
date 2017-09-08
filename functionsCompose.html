@@ -21,15 +21,55 @@
                 return prevFunc.call(this, nextFunc.apply(this, arguments));
             }
         }
-        var func1 = function (a) { return a + ' 1'; }
-        var func2 = function (b) { return b + ' 2'; }
-        var func3 = function (c) { return c + ' 3'; }
+        var func1 = function (x) {
+            var F1 = 'func1';
+            console.log(F1);
+            //return "return " + F1;
+        };
+        var func2 = function (x) {
+            var F1 = 'func2';
+            console.log(F1);
+            //return "return " + F1;
+        }
+        var func3 = function (x) {
+            var F1 = 'func3';
+            console.log(F1);
+            console.log("this.F1 = " + this.F1);
+            //return "return " + F1;
+        }
 
-        var composition = func3.compose(func2).compose(func1);
-        console.log(composition('count')); // returns 'count 1 2 3'
+        var model =  {
+            F1: "model.F1", 
+            method0: function () {
+                console.log("this.F1 = " + this.F1);    
+            },
+            methods: {
+                method1: func3,
+                method2: function (x) {
+                    
+                    console.log(this.F1);
+                }
+            }
+        }
 
-        var sequences = func1.sequence(func2).sequence(func3);
-        console.log(sequences('count')); // returns 'count 1 2 3'
+        var funcModel = function (x, y) {
+            var f1 = "funcModel.F1";
+            var func1 = func3;
+            var self = this;
+            var model = {};
+            model.FF1 = f1;
+            model.Func = func1;
+            return model;
+            
+        }(1,2);
+
+        //model.method0();
+        //model.methods.method1();
+        //var composition = func3.compose(func2).compose(func1).compose(model.methods.method1).compose(model.methods.method2);
+        //console.log(composition('count')); // returns 'count 1 2 3'
+
+        var sequences = func1.sequence(func2).sequence(func3).sequence(model.method0.bind(model)).sequence(model.methods.method1.bind(model)).sequence(model.methods.method2.bind(model)).sequence(funcModel.Func.bind(funcModel));
+        console.log(sequences()); // returns 'count 1 2 3'
     </script>
 
 
