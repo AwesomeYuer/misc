@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+    <title>函数式 函数组合</title>
+
+</head>
+<body>
+    <input type="text" id="aaa" />
+    <script>
+        Function.prototype.compose = function (prevFunc) {
+            var nextFunc = this;
+            return function () {
+                return nextFunc.call(this, prevFunc.apply(this, arguments));
+            }
+        }
+        Function.prototype.sequence = function (prevFunc) {
+            var nextFunc = this;
+            return function () {
+                return prevFunc.call(this, nextFunc.apply(this, arguments));
+            }
+        }
+        var func1 = function (a) { return a + ' 1'; }
+        var func2 = function (b) { return b + ' 2'; }
+        var func3 = function (c) { return c + ' 3'; }
+
+        var composition = func3.compose(func2).compose(func1);
+        console.log(composition('count')); // returns 'count 1 2 3'
+
+        var sequences = func1.sequence(func2).sequence(func3);
+        console.log(sequences('count')); // returns 'count 1 2 3'
+    </script>
+
+
+    <div style="position:absolute; z-index:200; height:200px;width:500px; right:0px;">
+        <div style="height:200px; overflow-y:auto;">
+            <pre class="console"></pre>
+        </div>
+        <textarea class="js-code-to-run"></textarea>
+    </div>
+</body>
+</html>

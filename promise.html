@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+    <title></title>
+
+    <!--<script src="lib/consolejs/console.js"></script>
+    <script src="lib/consolejs/functions.js"></script>
+    <script src="lib/es6-promise.auto.min.js"></script>
+    <script src="lib/es6-sham.min.js"></script>
+    <script src="lib/es6-shim.min.js"></script>-->
+
+</head>
+<body>
+    <input type="text" id="aaa" />
+    <script>
+        //var i = 0;
+        //setInterval(function (x) {
+        //    //console.log("setInterval " + new Date());
+        //    document.getElementById("aaa").value = i++;
+        //}, 1000);
+
+        function foo() {
+
+            console.log("foo");
+        }
+
+
+        function fooPromised() {
+            var p = new Promise(function (resolve, reject) {
+                //做一些异步操作
+                foo();
+                resolve("resolved");
+            });
+            return p;
+        }
+
+        fooPromised()
+            .then(
+                    function (data) {
+                        console.log('resolved');
+                        console.log(data);
+                    },
+                    function (reason, data) {
+                        console.log('rejected');
+                        console.log(reason);
+                    }
+                );
+
+        //test();
+    </script>
+    
+
+    <div style="position:absolute; z-index:200; height:200px;width:500px; right:0px;">
+        <div style="height:200px; overflow-y:auto;">
+            <pre class="console"></pre>
+        </div>
+        <textarea class="js-code-to-run"></textarea>
+    </div>
+</body>
+</html>

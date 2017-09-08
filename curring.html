@@ -1,0 +1,62 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="Generator" content="EditPlus®,Microshaoft®">
+    <meta name="Author" content="EditPlus®,Microshaoft®">
+    <meta name="Keywords" content="EditPlus®,Microshaoft®">
+    <meta name="Description" content="EditPlus®,Microshaoft®">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+<!--
+function currying(func) {
+    var args = Array.prototype.slice.call(arguments, 1);
+    return function () {
+            if (arguments.length === 0) {
+                return func.apply(this, args);
+            }
+            else {
+                Array.prototype.push.apply(args, arguments);
+                return arguments.callee;
+            }
+        }
+}
+function calc() {
+    var operator = arguments[0];
+    var i = 0;
+    if (isNaN(operator)) {
+        i = 1;
+    }
+    else {
+        operator = "+";
+    }
+    var args = Array.prototype.slice.call(arguments, i);
+    return args.reduce(function(prev, next) {
+                            var r = prev;
+                            if (isNaN(next)) {
+                                operator = next;
+                            }
+                            else {
+                            if (operator  == "+") {
+                                r = prev + next;
+                            } else if (operator  == "-") {
+                                r = prev - next;
+                            } else if (operator  == "*") {
+                                r = prev * next;
+                            } else if (operator  == "/") {
+                                r = pre / next;
+                            }
+                        }
+                        return r;
+        });
+}
+var calcCurry = currying(calc);
+alert(calcCurry(1,2,3)("-", 1,6)("+", 1,2)());
+
+
+//-->
+    </script>
+</body>
+</html>
