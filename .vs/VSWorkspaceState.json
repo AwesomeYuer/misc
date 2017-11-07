@@ -1,10 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\packages",
-    "\\packages\\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7",
-    "\\packages\\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\\build",
-    "\\packages\\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\\build\\net45"
+    "\\packages"
   ],
+  "SelectedNode": "\\jquiAutoComplete.html",
   "PreviewInSolutionExplorer": false
 }

@@ -1,0 +1,34 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="Generator" content="EditPlus®,Microshaoft®">
+    <meta name="Author" content="EditPlus®,Microshaoft®">
+    <meta name="Keywords" content="EditPlus®,Microshaoft®">
+    <meta name="Description" content="EditPlus®,Microshaoft®">
+    <title>Document</title>
+    <script type="text/javascript">
+<!--
+	function onPasteProcessFunc(e) {
+		var text = window.clipboardData.getData('Text');
+		if (text == 'sb') {
+			e.preventDefault();
+			return false;
+		}
+		return true;
+	}
+//-->
+    </script>
+</head>
+<body>
+    only support IE <br />
+    禁止粘贴"sb" 无反应<br />
+    <input type="text" id="t1" name="" />
+</body>
+<script type="text/javascript">
+<!--
+    //only support IE
+	document.getElementById('t1').addEventListener('paste', onPasteProcessFunc);
+//-->
+</script>
+</html>
