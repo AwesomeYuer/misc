@@ -36,8 +36,8 @@
                 // Each argument is an array with the following structure: [ data, statusText, jqXHR ]
                 var data = a1[0] + '.' + a2[0] + "." + a3[0]; // a1[ 0 ] = "Whip", a2[ 0 ] = " It"
                 $("#loading").hide();
-                console.log("ajaxComplete");
-                alert(data);
+                console.log("multiple ajax all done Complete");
+                alert("multiple ajax all done Complete: " + data);
                 
             });
         }
