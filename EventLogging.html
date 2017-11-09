@@ -1,0 +1,38 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+
+
+    
+
+    <script>
+
+        function EventLog(sourceName,
+                            eventID,
+                            category,
+                            logEntryType,
+                            onLogMessageFactory
+        ) {
+            //也可以单独用一个 LevelID：取值范围就是"整数"
+            if (eventID > config.MaxEventID) {
+                return;
+            }
+            var logMessage = onLogMessageFactory();
+            window.external.EventLogger.WriteLog(eventID, category, logEntryType, logMessage);
+        }
+        //调用样例
+        EventLog("boc", 1000, warning, function () {
+            var r = '';
+            r = "InstanceID" + JSON.stringify(asdasd);
+            return r;
+        });
+    </script>
+</head>
+<body>
+    <div id="loading"><span>loading...</span></div>
+    <input id="button1" type="button" value="JQuery ajax Start Stop" />
+
+</body>
+</html>
