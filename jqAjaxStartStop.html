@@ -1,0 +1,100 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <style>
+        #loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,.2);
+            display: none;
+        }
+
+            #loading span {
+                position: absolute;
+                top: 48%;
+                left: 48%;
+            }
+    </style>
+
+
+    <script src="Scripts/jquery-3.2.1.js"></script>
+
+    <script>
+        $(function () {
+            $("#button1").click(function () {
+                //  var data = $("form").serializeArray();
+                var data = null;
+                $.ajax({
+                    type: "get",
+                    url: "json/1.json",
+                    data: data,
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (xhr, error) {
+                        console.log(error);
+                    }
+                });
+                $.ajax({
+                    type: "get",
+                    url: "json/1.json",
+                    data: data,
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (xhr, error) {
+                        console.log(error);
+                    }
+                });
+                $.ajax({
+                    type: "get",
+                    url: "json/1.json",
+                    data: data,
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (xhr, error) {
+                        console.log(error);
+                    }
+                });
+                $.ajax({
+                    type: "get",
+                    url: "json/1.json",
+                    data: data,
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (xhr, error) {
+                        console.log(error);
+                    }
+                });
+
+            })
+
+            // 1.9+ 之后写法
+            $(document).ajaxStart(function () {
+                console.log("ajaxStart");
+                $("#loading").show();
+            }).ajaxStop(function () {
+                $("#loading").hide();
+                console.log("ajaxStop");
+            })
+
+
+        })
+    </script>
+</head>
+<body>
+    <div id="loading"><span>loading...</span></div>
+    <input id="button1" type="button" value="JQuery ajax Start Stop" />
+
+</body>
+</html>
