@@ -66,10 +66,15 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="jqWhenAjaxParallel.html" />
     <Content Include="json\1.json" />
+    <Content Include="json\3.json" />
+    <Content Include="json\2.json" />
+    <Content Include="package.json" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="onPasteControl.html" />
     <Content Include="Scripts\jquery-3.2.1.min.map" />
     <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
     <None Include="Web.Debug.config">

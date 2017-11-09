@@ -1,0 +1,51 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <style>
+        #loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,.2);
+            display: none;
+        }
+
+            #loading span {
+                position: absolute;
+                top: 48%;
+                left: 48%;
+            }
+    </style>
+
+
+    <script src="Scripts/jquery-3.2.1.js"></script>
+
+    <script>
+        
+        function AjaxParallel() {
+            console.log("ajaxStart");
+            $("#loading").show();
+            $.when($.ajax("/json/1.json"),
+                $.ajax("/json/2.json?1"),
+                $.ajax("/json/3.json?2")
+            ).done(function (a1, a2, a3) {
+                // a1 and a2 are arguments resolved for the page1 and page2 ajax requests, respectively.
+                // Each argument is an array with the following structure: [ data, statusText, jqXHR ]
+                var data = a1[0] + '.' + a2[0] + "." + a3[0]; // a1[ 0 ] = "Whip", a2[ 0 ] = " It"
+                $("#loading").hide();
+                console.log("ajaxComplete");
+                alert(data);
+                
+            });
+        }
+    </script>
+</head>
+<body>
+    <div id="loading"><span>loading...</span></div>
+    <input id="button1" type="button" value="JQuery ajax Start Stop" onclick="AjaxParallel()" />
+
+</body>
+</html>
