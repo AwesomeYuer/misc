@@ -1,0 +1,31 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="Generator" content="EditPlus®,Microshaoft®">
+    <meta name="Author" content="EditPlus®,Microshaoft®">
+    <meta name="Keywords" content="EditPlus®,Microshaoft®">
+    <meta name="Description" content="EditPlus®,Microshaoft®">
+    <title>Document</title>
+
+    
+</head>
+<body>
+    <script type="text/javascript">
+
+        var a = { "F1": 111, "F2": { "F22": { "F222": "1111111" } }, "F3": "999999999999" };
+        var json = JSON.stringify(a, function (k, v) {
+            if (typeof v == 'string') {
+                console.log('%s : %s', k, JSON.stringify(v));
+                if (k.indexOf("F") >= 0) {
+                    return '********';
+                }
+                keys = '';
+            }
+            return v;
+        });
+        console.log(json);
+
+    </script>
+</body>
+</html>

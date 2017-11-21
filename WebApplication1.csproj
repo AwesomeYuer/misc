@@ -68,6 +68,7 @@
   <ItemGroup>
     <Content Include="EventLogging.html" />
     <Content Include="jqWhenAjaxParallelWaitAllDone.html" />
+    <Content Include="JSON.stringify.html" />
     <Content Include="json\1.json" />
     <Content Include="json\3.json" />
     <Content Include="json\2.json" />
