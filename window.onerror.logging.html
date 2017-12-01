@@ -44,14 +44,19 @@
                     var c = 3;
                     //这里只拿三层堆栈信息
                     while (f && (--c > 0)) {
-                        ext.push(f.toString());
+                        ext.push(f);
                         if (f === f.caller) {
                             break;//如果有环
                         }
                         f = f.caller;
                     }
-                    ext = ext.join(",");
-                    data.extMsg = ext; //error.stack.toString();
+                    var s = '';
+                    for (var i in ext) {
+                        s += "at " + ext[i] + "(" + ext[i].arguments + ")\r\n"
+
+                    };
+
+                    data.extMsg = s; //error.stack.toString();
                     
                 }
                 console.log("window.onerror: %s", JSON.stringify(data));
@@ -69,6 +74,6 @@
 </head>
 <body>
     <button onclick="throw 'eeeeee'">throw "eeeee"</button>
-    <button onclick="(function aa() { ThrowError('eeeeeeeee')})()">(function aa() { alert('eeee')})()</button>
+    <button onclick="(function aa() { ThrowError('999999')})()">(function aa() { alert('eeee')})()</button>
 </body>
 </html>
