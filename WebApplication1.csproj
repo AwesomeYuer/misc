@@ -105,6 +105,7 @@
     <Content Include="Scripts\knockout-3.4.2.debug.js" />
     <Content Include="Scripts\knockout-3.4.2.js" />
     <Content Include="Web.config" />
+    <Content Include="window.onerror.logging.html" />
     <Content Include="xdsoft_autocomplete_scrollbar_issues_fix.html" />
   </ItemGroup>
   <ItemGroup>
