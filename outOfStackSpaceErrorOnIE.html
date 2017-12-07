@@ -19,7 +19,7 @@
                 try {
                     noop.apply(null, args);
                 } catch (e) {
-                    console.log(e.stack.length);
+                    console.error("caught error stack length: " + e.stack.length);
                     console.error(e);
                     return false;
                 }
@@ -58,7 +58,7 @@
                 test();
             } catch (e) {
                 //console.trace();
-                console.log(e.stack.length);
+                console.error("caught error stack length: " + e.stack.length);
                 console.error(e);
                 return count;
             }
