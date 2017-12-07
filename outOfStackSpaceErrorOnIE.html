@@ -1,0 +1,117 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="Generator" content="EditPlus®,Microshaoft®">
+    <meta name="Author" content="EditPlus®,Microshaoft®">
+    <meta name="Keywords" content="EditPlus®,Microshaoft®">
+    <meta name="Description" content="EditPlus®,Microshaoft®">
+    <title>IE 堆栈(叠)空间不足 out of stack space, javascript callback callstack recursive</title>
+</head>
+<body>
+    <script type="text/javascript">
+<!--
+        function getMaximumSupportedArgumentsLength() {
+            var args = { length: 0 };
+            function noop() { }
+            function test(n) {
+                args.length = n;
+                try {
+                    noop.apply(null, args);
+                } catch (e) {
+                    console.log(e.stack.length);
+                    console.error(e);
+                    return false;
+                }
+                return true;
+            }
+            function getNum(upTo) {
+                if (test(upTo)) {
+                    return upTo;
+                }
+                var min = 1;
+                var max = upTo;
+                var mid = Math.floor((min + max) * 0.5);
+                while (min < max) {
+                    if (test(mid)) {
+                        min = mid;
+                    } else {
+                        max = mid;
+                    }
+                    mid = Math.floor((min + max) * 0.5);
+                    if (mid == min) {
+                        break;
+                    }
+                }
+                return min;
+            }
+            return getNum(0xFFFFFFFF);
+        }
+        function getMaximumCallStackSize() {
+            var count = 0;
+            function test() {
+
+                count++;
+                test();
+            }
+            try {
+                test();
+            } catch (e) {
+                //console.trace();
+                console.log(e.stack.length);
+                console.error(e);
+                return count;
+            }
+        }
+
+        function timeouts() {
+            // do something here
+            // then set timeout and callback
+            var count = 0;
+            function timeoutCallback() {
+                count++;
+                console.log(count);
+                setTimeout(timeoutCallback);
+            }
+            timeoutCallback();
+        }
+
+        function outOfStackSpace() {
+            function a() {
+                a();
+            }
+            function b() {
+                try {
+                    a();
+                } catch (e) {
+                    console.log(e);
+                    b();
+                }
+            }
+            b();
+        }
+
+        function stackOverflow() {
+            // do something here
+            // then set timeout and callback
+            var count = 0;
+            function timeoutCallback() {
+                count++;
+                console.log(count);
+                setTimeout(timeoutCallback);
+            }
+            timeoutCallback();
+
+        }
+//-->
+    </script>
+
+    please use console execute:<br />
+    getMaximumSupportedArgumentsLength();<br />
+    getMaximumCallStackSize();<br />
+    timeouts();<br />
+    outOfStackSpace();<br />
+</body>
+
+
+</html>

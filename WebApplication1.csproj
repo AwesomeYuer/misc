@@ -66,6 +66,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="outOfStackSpaceErrorOnIE.html" />
     <Content Include="EventLogging.html" />
     <Content Include="jqWhenAjaxParallelWaitAllDone.html" />
     <Content Include="JSON.stringify.html" />
