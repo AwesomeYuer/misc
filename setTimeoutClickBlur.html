@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>setTimeout延迟异步处理调整事件处理时序</title>
+    <script type="text/javascript">
+            //blur 事件
+            function onBlurProcess() {
+                var now = new Date();
+                console.log("begin blur  " + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + " " + now.getMilliseconds());
+                for (var i = 0; i < 30000000; i++) {
+                    if (i % 10000000 == 0) {
+                        now = new Date();
+                        //console.log("blur===" + i + "===  " + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + " " + now.getMilliseconds());
+                    }
+                }
+                now = new Date();
+                console.log("end blur  " + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + " " + now.getMilliseconds());
+            }
+            //click 事件
+            function onClickProcess() {
+                var now = new Date();
+                console.log("begin click  " + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + " " + now.getMilliseconds());
+                window.setTimeout(function () {
+                    now = new Date();
+                    console.log("begin click-timeout " + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + " " + now.getMilliseconds());
+                    for (var i = 0; i <= 1000000; i++) {
+                        if (i % 10000 == 0) {
+                            now = new Date();
+                            //console.log("click===" + i + "=====" + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + " " + now.getMilliseconds())
+                        }
+                    }
+                    now = new Date();
+                    console.log("end click-timeout " + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + " " + now.getMilliseconds());
+                }, 1);
+                now = new Date();
+                console.log("end click   " + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + " " + now.getMilliseconds());
+            }
+    </script>
+</head>
+<body>
+    <input type="text" onblur="onBlurProcess()" />
+    <button type="button" onclick="onClickProcess()" accesskey="T">点击(T)</button>
+</body>
+
+</html>

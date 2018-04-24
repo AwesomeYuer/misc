@@ -11,6 +11,46 @@
 <body>
     <script type="text/javascript">
 <!--
+
+
+        function getMaximumSupportedArgumentSize() {
+            var args = [];
+            var s = "";
+            var ss = new Array(1024).join(" ");
+            function noop() { }
+            function test() {
+                try {
+                    args[0] = s;
+                    noop.apply(null, args);
+                    console.log(s.length);
+                } catch (e) {
+                    console.error("caught error stack length: " + e.stack.length);
+                    console.error(e);
+                    return false;
+                }
+                return true;
+            }
+
+            while (1 == 1) {
+                s += ss;
+                var r = test();
+                if (!r) {
+                    break;
+                }
+            }
+
+            //return getNum(0xFFFFFFFF);
+        }
+
+
+
+
+
+
+
+
+
+
         function getMaximumSupportedArgumentsLength() {
             var args = { length: 0 };
             function noop() { }
