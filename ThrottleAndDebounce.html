@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge, chrome=1">
+    <title>节流throttle 防抖debounce</title>
+    <style>
+        #container {
+            width: 100%;
+            height: 200px;
+            line-height: 200px;
+            text-align: center;
+            color: #fff;
+            background-color: #444;
+            font-size: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    https://github.com/mqyqingfeng/Blog/issues/26
+    <div id="container"></div>
+    <button id="button">点击取消throttle/debounce一次</button>
+    <script>
+        /**
+* 第五版 添加取消方法 用法跟 debounce 相同
+*/
+
+        var count = 1;
+        var container = document.getElementById('container');
+
+        function getUserAction() {
+            container.innerHTML = count++;
+            var now = new Date().getSeconds();
+            console.log("Processed:" + count + " @ " + now);
+        };
+
+        var setUseAction = throttle(getUserAction, 5000);
+        //var setUseAction = debounce(getUserAction, 5000, false);
+
+        container.onmousemove = setUseAction
+
+        document.getElementById("button").addEventListener('click', function () {
+            setUseAction.cancel();
+        })
+
+        function throttle(func, wait, options) {
+            
+            var timeout, context, args, result;
+            var previous = 0;
+            if (!options) options = {};
+
+            var later = function () {
+                previous = options.leading === false ? 0 : new Date().getTime();
+                timeout = null;
+                func.apply(context, args);
+                if (!timeout) context = args = null;
+            };
+
+            var throttled = function () {
+                var stamp = new Date();
+                var now = stamp.getTime();
+                console.log("throttling:" + stamp.getSeconds());
+                if (!previous && options.leading === false) previous = now;
+                var remaining = wait - (now - previous);
+                context = this;
+                args = arguments;
+                if (remaining <= 0 || remaining > wait) {
+                    if (timeout) {
+                        clearTimeout(timeout);
+                        timeout = null;
+                    }
+                    previous = now;
+                    func.apply(context, args);
+                    if (!timeout) context = args = null;
+                } else if (!timeout && options.trailing !== false) {
+                    stamp = new Date();
+                    console.log("throttling setTimeout:" + stamp.getSeconds());
+                    timeout = setTimeout(later, remaining);
+                }
+            };
+
+            throttled.cancel = function () {
+                clearTimeout(timeout);
+                previous = 0;
+                timeout = null;
+            };
+
+            return throttled;
+        }
+
+        function debounce(func, wait, immediate) {
+
+            var timeout, result;
+
+            var debounced = function () {
+                var stamp = new Date();
+                var now = stamp.getTime();
+                console.log("debouncing:" + stamp.getSeconds());
+                var context = this;
+                var args = arguments;
+
+                if (timeout) clearTimeout(timeout);
+                if (immediate) {
+                    // 如果已经执行过，不再执行
+                    var callNow = !timeout;
+                    timeout = setTimeout(function () {
+                        timeout = null;
+                    }, wait)
+                    if (callNow) result = func.apply(context, args)
+                }
+                else {
+                    timeout = setTimeout(function () {
+                        func.apply(context, args)
+                    }, wait);
+                }
+
+
+                return result;
+            };
+
+            debounced.cancel = function () {
+                clearTimeout(timeout);
+                timeout = null;
+            };
+
+            return debounced;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,151 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>jquery-ui DatePicker ui-datepicker-div hide on scroll in nested DIV container</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <style>
+
+        .demo {
+            position: relative;
+            border: solid 1px blue;
+            width: 500px;
+            height: 300px;
+            overflow: auto
+        }
+
+    </style>
+    <script>
+        function throttle(func, wait, options) {
+
+            var timeout, context, args, result;
+            var previous = 0;
+            if (!options) options = {};
+
+            var later = function () {
+                previous = options.leading === false ? 0 : new Date().getTime();
+                timeout = null;
+                func.apply(context, args);
+                if (!timeout) context = args = null;
+            };
+
+            var throttled = function () {
+                var stamp = new Date();
+                var now = stamp.getTime();
+                console.log("throttling:" + stamp.getSeconds());
+                if (!previous && options.leading === false) previous = now;
+                var remaining = wait - (now - previous);
+                context = this;
+                args = arguments;
+                if (remaining <= 0 || remaining > wait) {
+                    if (timeout) {
+                        clearTimeout(timeout);
+                        timeout = null;
+                    }
+                    previous = now;
+                    func.apply(context, args);
+                    if (!timeout) context = args = null;
+                } else if (!timeout && options.trailing !== false) {
+                    stamp = new Date();
+                    console.log("throttling setTimeout:" + stamp.getSeconds());
+                    timeout = setTimeout(later, remaining);
+                }
+            };
+
+            throttled.cancel = function () {
+                clearTimeout(timeout);
+                previous = 0;
+                timeout = null;
+            };
+
+            return throttled;
+        }
+
+
+        function debounce(func, wait, immediate) {
+
+            var timeout, result;
+
+            var debounced = function () {
+                var stamp = new Date();
+                var now = stamp.getTime();
+                console.log("debouncing:" + stamp.getSeconds());
+                var context = this;
+                var args = arguments;
+
+                if (timeout) clearTimeout(timeout);
+                if (immediate) {
+                    // 如果已经执行过，不再执行
+                    var callNow = !timeout;
+                    timeout = setTimeout(function () {
+                        timeout = null;
+                    }, wait)
+                    if (callNow) result = func.apply(context, args)
+                }
+                else {
+                    timeout = setTimeout(function () {
+                        func.apply(context, args)
+                    }, wait);
+                }
+
+
+                return result;
+            };
+
+            debounced.cancel = function () {
+                clearTimeout(timeout);
+                timeout = null;
+            };
+
+            return debounced;
+        }
+
+        $(function () {
+            var datePicker = $('input').datepicker();
+            var process = function () {
+                var stamp = new Date();
+                var now = stamp.getTime();
+                console.log("Processed:" + stamp.getSeconds());
+                datePicker.datepicker('hide');
+            };
+            var processed = debounce(process, 5000, false);
+            $(".demo").scroll(processed);
+
+            $(window).resize(function () {
+                datePicker.datepicker('hide');
+                //    $('#datepicker').blur();  
+            });
+        });
+       
+    </script>
+</head>
+
+    ​<body style="background-color: yellow;">
+
+    http://jsfiddle.net/m6A5q/331/
+
+    <div class="demo">
+
+        <p>Date: <input type="text" id="datepicker">Date: <input type="text" id="datepicker"></p>
+
+        Date: <input type="text" id="datepicker">
+
+        Date: <input type="text" id="datepicker"></p>
+        <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
+        <div class="demo-description">
+            <p>The datepicker is tied to a standard form input field.  Focus on the input (click, or use the tab key) to open an interactive calendar in a small overlay.  Choose a date, click elsewhere on the page (blur the input), or hit the Esc key to close. If a date is chosen, feedback is shown as the input's value.</p>
+            <p>The datepicker is tied to a standard form input field.  Focus on the input (click, or use the tab key) to open an interactive calendar in a small overlay.  Choose a date, click elsewhere on the page (blur the input), or hit the Esc key to close. If a date is chosen, feedback is shown as the input's value.</p>
+            <p>The datepicker is tied to a standard form input field.  Focus on the input (click, or use the tab key) to open an interactive calendar in a small overlay.  Choose a date, click elsewhere on the page (blur the input), or hit the Esc key to close. If a date is chosen, feedback is shown as the input's value.</p>
+            <p>The datepicker is tied to a standard form input field.  Focus on the input (click, or use the tab key) to open an interactive calendar in a small overlay.  Choose a date, click elsewhere on the page (blur the input), or hit the Esc key to close. If a date is chosen, feedback is shown as the input's value.</p>
+            <p>The datepicker is tied to a standard form input field.  Focus on the input (click, or use the tab key) to open an interactive calendar in a small overlay.  Choose a date, click elsewhere on the page (blur the input), or hit the Esc key to close. If a date is chosen, feedback is shown as the input's value.</p><p>The datepicker is tied to a standard form input field.  Focus on the input (click, or use the tab key) to open an interactive calendar in a small overlay.  Choose a date, click elsewhere on the page (blur the input), or hit the Esc key to close. If a date is chosen, feedback is shown as the input's value.</p><p>The datepicker is tied to a standard form input field.  Focus on the input (click, or use the tab key) to open an interactive calendar in a small overlay.  Choose a date, click elsewhere on the page (blur the input), or hit the Esc key to close. If a date is chosen, feedback is shown as the input's value.</p><p>The datepicker is tied to a standard form input field.  Focus on the input (click, or use the tab key) to open an interactive calendar in a small overlay.  Choose a date, click elsewhere on the page (blur the input), or hit the Esc key to close. If a date is chosen, feedback is shown as the input's value.</p><p>The datepicker is tied to a standard form input field.  Focus on the input (click, or use the tab key) to open an interactive calendar in a small overlay.  Choose a date, click elsewhere on the page (blur the input), or hit the Esc key to close. If a date is chosen, feedback is shown as the input's value.</p>
+        </div>
+
+    </div>
+
+    <!-- End demo-description -->
+
+
+</body>
+</html>
