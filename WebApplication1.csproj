@@ -68,6 +68,7 @@
   <ItemGroup>
     <Content Include="CallbackHell.html" />
     <Content Include="jqui-datepicker.html" />
+    <Content Include="mathjs.html" />
     <Content Include="outOfStackSpaceErrorOnIE.html" />
     <Content Include="EventLogging.html" />
     <Content Include="jqWhenAjaxParallelWaitAllDone.html" />

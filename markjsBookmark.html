@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="Generator" content="EditPlus®,Microshaoft®">
+	<meta name="Author" content="EditPlus®,Microshaoft®">
+	<meta name="Keywords" content="EditPlus®,Microshaoft®">
+	<meta name="Description" content="EditPlus®,Microshaoft®">
+	<title>Document</title>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/g/jquery@3.1.0,mark.js@8.6.0(jquery.mark.min.js)"></script>
+
+	<style>
+	mark {
+	  background: yellow;
+	}
+
+	mark.current {
+	  background: orange;
+	}
+
+	.header {
+	  padding: 10px;
+	  width: 100%;
+	  background: #eee;
+	  position: fixed;
+	  top: 0;
+	  left: 0;
+	}
+
+	.content {
+	  margin-top: 50px;
+	}
+
+	</style>
+<script type="text/javascript">
+<!--
+
+
+
+
+
+  $(function () {
+
+    // the input field
+    var $input = $("input[type='search']"),
+      // clear button
+      $clearBtn = $("button[data-search='clear']"),
+      // prev button
+      $prevBtn = $("button[data-search='prev']"),
+      // next button
+      $nextBtn = $("button[data-search='next']"),
+
+      $jumpToBtn = $("button[data-search='jumpTo']"),
+      // the context where to search
+      $content = $(".content"),
+      // jQuery object to save <mark> elements
+      $results,
+      // the class that will be appended to the current
+      // focused element
+      currentClass = "current",
+      // top offset for the jump (the search bar)
+      offsetTop = 50,
+      // the current index of the focused element
+      currentIndex = 0;
+
+
+    var options = {
+      "separateWordSearch": false,
+      "diacritics": true,
+      "debug": false,
+      "acrossElements": true,
+      "filter": function (node, txt, hit) {
+        console.log("begin=================");
+        console.log(node);
+        console.log(txt);
+        console.log(hit);
+        console.log("end=================");
+        return true;
+      },
+      "done": function () {
+        $results = $content.find("mark");
+        currentIndex = 0;
+        jumpTo();
+      }
+
+    };
+
+    /**
+     * Jumps to the element matching the currentIndex
+     */
+    function jumpTo() {
+      if ($results.length) {
+        var position,
+          $current = $results.eq(currentIndex);
+        $results.removeClass(currentClass);
+        if ($current.length) {
+          $current.addClass(currentClass);
+          position = $current.offset().top - offsetTop;
+          window.scrollTo(0, position);
+        }
+      }
+    }
+
+    function jumpTo2(index) {
+      if ($results.length) {
+        var position,
+          $current = $results.eq(index);
+        $results.removeClass(currentClass);
+        if ($current.length) {
+          $current.addClass(currentClass);
+          position = $current.offset().top - offsetTop;
+          window.scrollTo(0, position);
+        }
+      }
+    }
+
+    function jumpToBookmark() {
+
+      while (1 == 1) {
+
+        if ($results.length) {
+          currentIndex += 1
+          if (currentIndex < 0) {
+            currentIndex = $results.length - 1;
+          }
+          if (currentIndex > $results.length - 1) {
+            currentIndex = 0;
+          }
+          var position,
+            $current = $results.eq(currentIndex);
+          $results.removeClass(currentClass);
+          if ($current.length) {
+            $current.addClass(currentClass);
+            position = $current.offset().top - offsetTop;
+            //debugger;
+            if ($current.parent()[0].tagName == "BOOKMARK") {
+              break;
+            }
+          }
+
+
+        }
+
+
+      }
+      window.scrollTo(0, position);
+      alert(currentIndex);
+
+    }
+
+
+
+    /**
+     * Searches for the entered keyword in the
+     * specified context on input
+     */
+
+
+
+    $input.on("input", function () {
+      var searchVal = this.value;
+      $content.unmark({
+        done: function () {
+          $content.mark(searchVal, options);
+        }
+      });
+    });
+
+    /**
+     * Clears the search
+     */
+    $clearBtn.on("click", function () {
+      $content.unmark();
+      $input.val("").focus();
+    });
+
+    $jumpToBtn.on("click", function () {
+      var jumpToIndex = parseInt(document.getElementById("jumpToIndex").value);
+      jumpTo2(jumpToIndex);
+    });
+
+    var $markSelectionBtn = $("#markSelectionBtn");
+    $markSelectionBtn.on("click", function () {
+      var userSelection;
+      if (window.getSelection) {
+        //现代浏览器
+        userSelection = window.getSelection();
+      } else if (document.selection) {
+        //IE浏览器 考虑到Opera，应该放在后面
+        userSelection = document.selection.createRange();
+      }
+
+      var text = userSelection.toString();
+
+      var nNd = document.createElement("bookmark");
+      var w = userSelection.getRangeAt(0);
+      w.surroundContents(nNd);
+
+      var searchVal = text;
+      $content.unmark({
+        done: function () {
+          $content.mark(searchVal, options);
+        }
+      });
+    });
+
+    var $jumpToBookmarkBtn = $("#jumpToBookmarkBtn");
+    $jumpToBookmarkBtn.on("click", function () {
+
+      jumpToBookmark();
+
+    });
+
+    /**
+     * Next and previous search jump to
+     */
+    $nextBtn.add($prevBtn).on("click", function () {
+      if ($results.length) {
+        currentIndex += $(this).is($prevBtn) ? -1 : 1;
+        if (currentIndex < 0) {
+          currentIndex = $results.length - 1;
+        }
+        if (currentIndex > $results.length - 1) {
+          currentIndex = 0;
+        }
+        console.log("move:" + currentIndex);
+        jumpTo();
+      }
+    });
+  });
+
+
+
+
+
+//-->
+</script>
+
+</head>
+<body>
+<!-- <input type="text" id="keyWord" name="" /><input type="button" value="mark" accesskey="m" onclick="mark();" /> -->
+
+<div class="header">
+  <!-- Search: -->
+  <!-- <input type="search" placeholder="Lorem"> -->
+  <!-- <button data-search="next">&darr;</button> -->
+  <!-- <button data-search="prev">&uarr;</button>&nbsp; -->
+  <!-- <input type="text" id="jumpToIndex" /><button data-search="jumpTo">JumpTo</button> -->
+  <!-- &nbsp; -->
+  <button id="markSelectionBtn">mark 选中的文本</button>
+  &nbsp;
+  <input type="button" value="jump To Bookmark" id="jumpToBookmarkBtn" />
+  &nbsp;
+  <button data-search="clear">clear</button>
+
+
+</div>
+
+<div class="content" oncontextmenu="">
+
+<h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9"><a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a><strong>你别<!--asdasd -->选<a href="">感兴趣</a>(/有用)的文章：</strong></h3>
+阿什杜德asdsad
+<pre>
+<span style="font-family: Consolas">
+<span style="color: #0000ff">&lt;!DOCTYPE </span><span style="color: #800080">html PUBLIC </span><span style="color: #000000">&quot;</span><span style="color: #800080">-</span><span style="color: #000000">//</span><span style="color: #800080">W3C</span><span style="color: #000000">//</span><span style="color: #800080">DTD XHTML 1</span><span style="color: #000000">.</span><span style="color: #800080">0 Transitional</span><span style="color: #000000">//</span><span style="color: #800080">EN</span><span style="color: #000000">&quot; &quot;</span><span style="color: #800080">http:</span><span style="color: #000000">//</span><span style="color: #800080">www</span><span style="color: #000000">.</span><span style="color: #800080">w3</span><span style="color: #000000">.</span><span style="color: #800080">org</span><span style="color: #000000">/</span><span style="color: #800080">TR</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1</span><span style="color: #000000">/</span><span style="color: #800080">DTD</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1-transitional</span><span style="color: #000000">.</span><span style="color: #800080">dtd</span><span style="color: #000000">&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;html </span><span style="color: #800080">xmlns</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;http://www.w3.org/1999/xhtml&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;head&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;meta </span><span style="color: #ff0000">http-equiv</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;Content-type&quot; </span><span style="color: #ff0000">content</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;text/html;charset=utf-8&quot; </span><span style="color: #0000ff">/&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;title&gt;</span><span style="color: #000000">关键字高亮显示</span><span style="color: #0000ff">&lt;/title&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/head&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;body&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;div </span><span style="color: #ff0000">class</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;result&quot; </span><span style="color: #ff0000">id</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;textbox&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;p&gt;</span><span style="color: #000000">百度（Nasdaq简称：BIDU）是全球最大的中文搜索引擎，2000年1月由李彦宏、徐勇两人创立于北京中关村，致力于向人们提供“简单，可依赖”的</span><span style="color: #0000ff">&lt;/p&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;p&gt;</span><span style="color: #000000">信息获取方式。“</span><span style="color: #0000ff">&lt;a </span><span style="color: #ff0000">href</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000">百度</span><span style="color: #0000ff">&lt;/a&gt;</span><span style="color: #000000">”二字源于中国宋朝词人辛弃疾的《青玉案&middot;元夕》词句“众里寻他千百度”，象征着百度对中文信息检索技术的执著追求。</span><span style="color: #0000ff">&lt;/p&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/div&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;script&gt; </span>
+<span style="color: #0000ff">function </span><span style="color: #800000">highlight(idVal, keyword) { </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">textbox = </span><span style="color: #008080">document</span><span style="color: #800000">.</span><span style="color: #000080">getElementById</span><span style="color: #800000">(idVal); </span>
+<span style="color: #0000ff">if </span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;&quot; </span><span style="color: #800000">== keyword) </span><span style="color: #0000ff">return</span><span style="color: #800000">; </span>
+<span style="color: #008000">//获取所有文字内容 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">temp = textbox.</span><span style="color: #008080">innerHTML</span><span style="color: #800000">; </span>
+<span style="color: #800000">console.</span><span style="color: #000080">log</span><span style="color: #800000">(temp); </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">htmlReg = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">RegExp</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;\&lt;.*?\&gt;&quot;</span><span style="color: #800000">, </span><span style="color: #ff00ff">&quot;i&quot;</span><span style="color: #800000">); </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">arr = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">Array</span><span style="color: #800000">(); </span>
+
+<span style="color: #008000">//替换HTML标签 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(</span><span style="color: #0000ff">var </span><span style="color: #800000">i = 0; </span><span style="color: #0000ff">true</span><span style="color: #800000">; i++) { </span>
+<span style="color: #008000">//匹配html标签 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">tag = htmlReg.</span><span style="color: #000080">exec</span><span style="color: #800000">(temp); </span>
+<span style="color: #0000ff">if </span><span style="color: #800000">(tag) { </span>
+<span style="color: #800000">arr[i] = tag; </span>
+<span style="color: #800000">} </span><span style="color: #0000ff">else </span><span style="color: #800000">{ </span>
+<span style="color: #0000ff">break</span><span style="color: #800000">; </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(tag, </span><span style="color: #ff00ff">&quot;{[(&quot; </span><span style="color: #800000">+ i + </span><span style="color: #ff00ff">&quot;)]}&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">} </span>
+
+
+<span style="color: #008000">// 讲关键词拆分并入数组 </span>
+<span style="color: #800000">words = </span><span style="color: #000080">decodeURIComponent</span><span style="color: #800000">(keyword.</span><span style="color: #000080">replace</span><span style="color: #800000">(/\,/g, </span><span style="color: #ff00ff">' '</span><span style="color: #800000">)).</span><span style="color: #000080">split</span><span style="color: #800000">(/\s+/); </span>
+
+<span style="color: #008000">//替换关键字 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(w = 0; w &lt; words.</span><span style="color: #008080">length</span><span style="color: #800000">; w++) { </span>
+<span style="color: #008000">// 匹配关键词，保留关键词中可以出现的特殊字符 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">r = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">RegExp</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;(&quot; </span><span style="color: #800000">+ words[w].</span><span style="color: #000080">replace</span><span style="color: #800000">(/[(){}.+*?^$|\\\[\]]/g, </span><span style="color: #ff00ff">&quot;\\$&amp;&quot;</span><span style="color: #800000">) + </span><span style="color: #ff00ff">&quot;)&quot;</span><span style="color: #800000">, </span><span style="color: #ff00ff">&quot;ig&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(r, </span><span style="color: #ff00ff">&quot;&lt;b style='color:Red;'&gt;$1&lt;/b&gt;&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">} </span>
+
+<span style="color: #008000">//恢复HTML标签 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(</span><span style="color: #0000ff">var </span><span style="color: #800000">i = 0; i &lt; arr.</span><span style="color: #008080">length</span><span style="color: #800000">; i++) { </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;{[(&quot; </span><span style="color: #800000">+ i + </span><span style="color: #ff00ff">&quot;)]}&quot;</span><span style="color: #800000">, arr[i]); </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">textbox.</span><span style="color: #008080">innerHTML </span><span style="color: #800000">= temp; </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">highlight(</span><span style="color: #ff00ff">&quot;textbox&quot;</span><span style="color: #800000">,</span><span style="color: #ff00ff">&quot;百度,李彦宏,的&quot;</span><span style="color: #800000">); </span>
+<span style="color: #0000ff">&lt;/script&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/body&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/html&gt;</span><span style="color: #000000"> </span>
+</span>
+</pre>
+<h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9"><a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a><strong>你别<!--asdasd -->选<a href="">感兴趣</a>(/有用)的文章：</strong></h3>
+阿什杜德asdsad
+<pre>
+<span style="font-family: Consolas">
+<span style="color: #0000ff">&lt;!DOCTYPE </span><span style="color: #800080">html PUBLIC </span><span style="color: #000000">&quot;</span><span style="color: #800080">-</span><span style="color: #000000">//</span><span style="color: #800080">W3C</span><span style="color: #000000">//</span><span style="color: #800080">DTD XHTML 1</span><span style="color: #000000">.</span><span style="color: #800080">0 Transitional</span><span style="color: #000000">//</span><span style="color: #800080">EN</span><span style="color: #000000">&quot; &quot;</span><span style="color: #800080">http:</span><span style="color: #000000">//</span><span style="color: #800080">www</span><span style="color: #000000">.</span><span style="color: #800080">w3</span><span style="color: #000000">.</span><span style="color: #800080">org</span><span style="color: #000000">/</span><span style="color: #800080">TR</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1</span><span style="color: #000000">/</span><span style="color: #800080">DTD</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1-transitional</span><span style="color: #000000">.</span><span style="color: #800080">dtd</span><span style="color: #000000">&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;html </span><span style="color: #800080">xmlns</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;http://www.w3.org/1999/xhtml&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;head&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;meta </span><span style="color: #ff0000">http-equiv</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;Content-type&quot; </span><span style="color: #ff0000">content</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;text/html;charset=utf-8&quot; </span><span style="color: #0000ff">/&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;title&gt;</span><span style="color: #000000">关键字高亮显示</span><span style="color: #0000ff">&lt;/title&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/head&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;body&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;div </span><span style="color: #ff0000">class</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;result&quot; </span><span style="color: #ff0000">id</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;textbox&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;p&gt;</span><span style="color: #000000">百度（Nasdaq简称：BIDU）是全球最大的中文搜索引擎，2000年1月由李彦宏、徐勇两人创立于北京中关村，致力于向人们提供“简单，可依赖”的</span><span style="color: #0000ff">&lt;/p&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;p&gt;</span><span style="color: #000000">信息获取方式。“</span><span style="color: #0000ff">&lt;a </span><span style="color: #ff0000">href</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000">百度</span><span style="color: #0000ff">&lt;/a&gt;</span><span style="color: #000000">”二字源于中国宋朝词人辛弃疾的《青玉案&middot;元夕》词句“众里寻他千百度”，象征着百度对中文信息检索技术的执著追求。</span><span style="color: #0000ff">&lt;/p&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/div&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;script&gt; </span>
+<span style="color: #0000ff">function </span><span style="color: #800000">highlight(idVal, keyword) { </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">textbox = </span><span style="color: #008080">document</span><span style="color: #800000">.</span><span style="color: #000080">getElementById</span><span style="color: #800000">(idVal); </span>
+<span style="color: #0000ff">if </span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;&quot; </span><span style="color: #800000">== keyword) </span><span style="color: #0000ff">return</span><span style="color: #800000">; </span>
+<span style="color: #008000">//获取所有文字内容 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">temp = textbox.</span><span style="color: #008080">innerHTML</span><span style="color: #800000">; </span>
+<span style="color: #800000">console.</span><span style="color: #000080">log</span><span style="color: #800000">(temp); </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">htmlReg = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">RegExp</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;\&lt;.*?\&gt;&quot;</span><span style="color: #800000">, </span><span style="color: #ff00ff">&quot;i&quot;</span><span style="color: #800000">); </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">arr = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">Array</span><span style="color: #800000">(); </span>
+
+<span style="color: #008000">//替换HTML标签 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(</span><span style="color: #0000ff">var </span><span style="color: #800000">i = 0; </span><span style="color: #0000ff">true</span><span style="color: #800000">; i++) { </span>
+<span style="color: #008000">//匹配html标签 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">tag = htmlReg.</span><span style="color: #000080">exec</span><span style="color: #800000">(temp); </span>
+<span style="color: #0000ff">if </span><span style="color: #800000">(tag) { </span>
+<span style="color: #800000">arr[i] = tag; </span>
+<span style="color: #800000">} </span><span style="color: #0000ff">else </span><span style="color: #800000">{ </span>
+<span style="color: #0000ff">break</span><span style="color: #800000">; </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(tag, </span><span style="color: #ff00ff">&quot;{[(&quot; </span><span style="color: #800000">+ i + </span><span style="color: #ff00ff">&quot;)]}&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">} </span>
+
+
+<span style="color: #008000">// 讲关键词拆分并入数组 </span>
+<span style="color: #800000">words = </span><span style="color: #000080">decodeURIComponent</span><span style="color: #800000">(keyword.</span><span style="color: #000080">replace</span><span style="color: #800000">(/\,/g, </span><span style="color: #ff00ff">' '</span><span style="color: #800000">)).</span><span style="color: #000080">split</span><span style="color: #800000">(/\s+/); </span>
+
+<span style="color: #008000">//替换关键字 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(w = 0; w &lt; words.</span><span style="color: #008080">length</span><span style="color: #800000">; w++) { </span>
+<span style="color: #008000">// 匹配关键词，保留关键词中可以出现的特殊字符 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">r = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">RegExp</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;(&quot; </span><span style="color: #800000">+ words[w].</span><span style="color: #000080">replace</span><span style="color: #800000">(/[(){}.+*?^$|\\\[\]]/g, </span><span style="color: #ff00ff">&quot;\\$&amp;&quot;</span><span style="color: #800000">) + </span><span style="color: #ff00ff">&quot;)&quot;</span><span style="color: #800000">, </span><span style="color: #ff00ff">&quot;ig&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(r, </span><span style="color: #ff00ff">&quot;&lt;b style='color:Red;'&gt;$1&lt;/b&gt;&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">} </span>
+
+<span style="color: #008000">//恢复HTML标签 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(</span><span style="color: #0000ff">var </span><span style="color: #800000">i = 0; i &lt; arr.</span><span style="color: #008080">length</span><span style="color: #800000">; i++) { </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;{[(&quot; </span><span style="color: #800000">+ i + </span><span style="color: #ff00ff">&quot;)]}&quot;</span><span style="color: #800000">, arr[i]); </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">textbox.</span><span style="color: #008080">innerHTML </span><span style="color: #800000">= temp; </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">highlight(</span><span style="color: #ff00ff">&quot;textbox&quot;</span><span style="color: #800000">,</span><span style="color: #ff00ff">&quot;百度,李彦宏,的&quot;</span><span style="color: #800000">); </span>
+<span style="color: #0000ff">&lt;/script&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/body&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/html&gt;</span><span style="color: #000000"> </span>
+</span>
+</pre>
+<h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9"><a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a><strong>你别<!--asdasd -->选<a href="">感兴趣</a>(/有用)的文章：</strong></h3>
+阿什杜德asdsad
+<pre>
+<span style="font-family: Consolas">
+<span style="color: #0000ff">&lt;!DOCTYPE </span><span style="color: #800080">html PUBLIC </span><span style="color: #000000">&quot;</span><span style="color: #800080">-</span><span style="color: #000000">//</span><span style="color: #800080">W3C</span><span style="color: #000000">//</span><span style="color: #800080">DTD XHTML 1</span><span style="color: #000000">.</span><span style="color: #800080">0 Transitional</span><span style="color: #000000">//</span><span style="color: #800080">EN</span><span style="color: #000000">&quot; &quot;</span><span style="color: #800080">http:</span><span style="color: #000000">//</span><span style="color: #800080">www</span><span style="color: #000000">.</span><span style="color: #800080">w3</span><span style="color: #000000">.</span><span style="color: #800080">org</span><span style="color: #000000">/</span><span style="color: #800080">TR</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1</span><span style="color: #000000">/</span><span style="color: #800080">DTD</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1-transitional</span><span style="color: #000000">.</span><span style="color: #800080">dtd</span><span style="color: #000000">&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;html </span><span style="color: #800080">xmlns</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;http://www.w3.org/1999/xhtml&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;head&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;meta </span><span style="color: #ff0000">http-equiv</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;Content-type&quot; </span><span style="color: #ff0000">content</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;text/html;charset=utf-8&quot; </span><span style="color: #0000ff">/&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;title&gt;</span><span style="color: #000000">关键字高亮显示</span><span style="color: #0000ff">&lt;/title&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/head&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;body&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;div </span><span style="color: #ff0000">class</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;result&quot; </span><span style="color: #ff0000">id</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;textbox&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;p&gt;</span><span style="color: #000000">百度（Nasdaq简称：BIDU）是全球最大的中文搜索引擎，2000年1月由李彦宏、徐勇两人创立于北京中关村，致力于向人们提供“简单，可依赖”的</span><span style="color: #0000ff">&lt;/p&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;p&gt;</span><span style="color: #000000">信息获取方式。“</span><span style="color: #0000ff">&lt;a </span><span style="color: #ff0000">href</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000">百度</span><span style="color: #0000ff">&lt;/a&gt;</span><span style="color: #000000">”二字源于中国宋朝词人辛弃疾的《青玉案&middot;元夕》词句“众里寻他千百度”，象征着百度对中文信息检索技术的执著追求。</span><span style="color: #0000ff">&lt;/p&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/div&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;script&gt; </span>
+<span style="color: #0000ff">function </span><span style="color: #800000">highlight(idVal, keyword) { </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">textbox = </span><span style="color: #008080">document</span><span style="color: #800000">.</span><span style="color: #000080">getElementById</span><span style="color: #800000">(idVal); </span>
+<span style="color: #0000ff">if </span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;&quot; </span><span style="color: #800000">== keyword) </span><span style="color: #0000ff">return</span><span style="color: #800000">; </span>
+<span style="color: #008000">//获取所有文字内容 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">temp = textbox.</span><span style="color: #008080">innerHTML</span><span style="color: #800000">; </span>
+<span style="color: #800000">console.</span><span style="color: #000080">log</span><span style="color: #800000">(temp); </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">htmlReg = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">RegExp</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;\&lt;.*?\&gt;&quot;</span><span style="color: #800000">, </span><span style="color: #ff00ff">&quot;i&quot;</span><span style="color: #800000">); </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">arr = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">Array</span><span style="color: #800000">(); </span>
+
+<span style="color: #008000">//替换HTML标签 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(</span><span style="color: #0000ff">var </span><span style="color: #800000">i = 0; </span><span style="color: #0000ff">true</span><span style="color: #800000">; i++) { </span>
+<span style="color: #008000">//匹配html标签 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">tag = htmlReg.</span><span style="color: #000080">exec</span><span style="color: #800000">(temp); </span>
+<span style="color: #0000ff">if </span><span style="color: #800000">(tag) { </span>
+<span style="color: #800000">arr[i] = tag; </span>
+<span style="color: #800000">} </span><span style="color: #0000ff">else </span><span style="color: #800000">{ </span>
+<span style="color: #0000ff">break</span><span style="color: #800000">; </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(tag, </span><span style="color: #ff00ff">&quot;{[(&quot; </span><span style="color: #800000">+ i + </span><span style="color: #ff00ff">&quot;)]}&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">} </span>
+
+
+<span style="color: #008000">// 讲关键词拆分并入数组 </span>
+<span style="color: #800000">words = </span><span style="color: #000080">decodeURIComponent</span><span style="color: #800000">(keyword.</span><span style="color: #000080">replace</span><span style="color: #800000">(/\,/g, </span><span style="color: #ff00ff">' '</span><span style="color: #800000">)).</span><span style="color: #000080">split</span><span style="color: #800000">(/\s+/); </span>
+
+<span style="color: #008000">//替换关键字 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(w = 0; w &lt; words.</span><span style="color: #008080">length</span><span style="color: #800000">; w++) { </span>
+<span style="color: #008000">// 匹配关键词，保留关键词中可以出现的特殊字符 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">r = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">RegExp</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;(&quot; </span><span style="color: #800000">+ words[w].</span><span style="color: #000080">replace</span><span style="color: #800000">(/[(){}.+*?^$|\\\[\]]/g, </span><span style="color: #ff00ff">&quot;\\$&amp;&quot;</span><span style="color: #800000">) + </span><span style="color: #ff00ff">&quot;)&quot;</span><span style="color: #800000">, </span><span style="color: #ff00ff">&quot;ig&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(r, </span><span style="color: #ff00ff">&quot;&lt;b style='color:Red;'&gt;$1&lt;/b&gt;&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">} </span>
+
+<span style="color: #008000">//恢复HTML标签 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(</span><span style="color: #0000ff">var </span><span style="color: #800000">i = 0; i &lt; arr.</span><span style="color: #008080">length</span><span style="color: #800000">; i++) { </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;{[(&quot; </span><span style="color: #800000">+ i + </span><span style="color: #ff00ff">&quot;)]}&quot;</span><span style="color: #800000">, arr[i]); </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">textbox.</span><span style="color: #008080">innerHTML </span><span style="color: #800000">= temp; </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">highlight(</span><span style="color: #ff00ff">&quot;textbox&quot;</span><span style="color: #800000">,</span><span style="color: #ff00ff">&quot;百度,李彦宏,的&quot;</span><span style="color: #800000">); </span>
+<span style="color: #0000ff">&lt;/script&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/body&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/html&gt;</span><span style="color: #000000"> </span>
+</span>
+</pre>
+<h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9"><a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a><strong>你别<!--asdasd -->选<a href="">感兴趣</a>(/有用)的文章：</strong></h3>
+阿什杜德asdsad
+<pre>
+<span style="font-family: Consolas">
+<span style="color: #0000ff">&lt;!DOCTYPE </span><span style="color: #800080">html PUBLIC </span><span style="color: #000000">&quot;</span><span style="color: #800080">-</span><span style="color: #000000">//</span><span style="color: #800080">W3C</span><span style="color: #000000">//</span><span style="color: #800080">DTD XHTML 1</span><span style="color: #000000">.</span><span style="color: #800080">0 Transitional</span><span style="color: #000000">//</span><span style="color: #800080">EN</span><span style="color: #000000">&quot; &quot;</span><span style="color: #800080">http:</span><span style="color: #000000">//</span><span style="color: #800080">www</span><span style="color: #000000">.</span><span style="color: #800080">w3</span><span style="color: #000000">.</span><span style="color: #800080">org</span><span style="color: #000000">/</span><span style="color: #800080">TR</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1</span><span style="color: #000000">/</span><span style="color: #800080">DTD</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1-transitional</span><span style="color: #000000">.</span><span style="color: #800080">dtd</span><span style="color: #000000">&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;html </span><span style="color: #800080">xmlns</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;http://www.w3.org/1999/xhtml&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;head&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;meta </span><span style="color: #ff0000">http-equiv</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;Content-type&quot; </span><span style="color: #ff0000">content</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;text/html;charset=utf-8&quot; </span><span style="color: #0000ff">/&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;title&gt;</span><span style="color: #000000">关键字高亮显示</span><span style="color: #0000ff">&lt;/title&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/head&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;body&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;div </span><span style="color: #ff0000">class</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;result&quot; </span><span style="color: #ff0000">id</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;textbox&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;p&gt;</span><span style="color: #000000">百度（Nasdaq简称：BIDU）是全球最大的中文搜索引擎，2000年1月由李彦宏、徐勇两人创立于北京中关村，致力于向人们提供“简单，可依赖”的</span><span style="color: #0000ff">&lt;/p&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;p&gt;</span><span style="color: #000000">信息获取方式。“</span><span style="color: #0000ff">&lt;a </span><span style="color: #ff0000">href</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000">百度</span><span style="color: #0000ff">&lt;/a&gt;</span><span style="color: #000000">”二字源于中国宋朝词人辛弃疾的《青玉案&middot;元夕》词句“众里寻他千百度”，象征着百度对中文信息检索技术的执著追求。</span><span style="color: #0000ff">&lt;/p&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/div&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;script&gt; </span>
+<span style="color: #0000ff">function </span><span style="color: #800000">highlight(idVal, keyword) { </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">textbox = </span><span style="color: #008080">document</span><span style="color: #800000">.</span><span style="color: #000080">getElementById</span><span style="color: #800000">(idVal); </span>
+<span style="color: #0000ff">if </span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;&quot; </span><span style="color: #800000">== keyword) </span><span style="color: #0000ff">return</span><span style="color: #800000">; </span>
+<span style="color: #008000">//获取所有文字内容 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">temp = textbox.</span><span style="color: #008080">innerHTML</span><span style="color: #800000">; </span>
+<span style="color: #800000">console.</span><span style="color: #000080">log</span><span style="color: #800000">(temp); </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">htmlReg = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">RegExp</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;\&lt;.*?\&gt;&quot;</span><span style="color: #800000">, </span><span style="color: #ff00ff">&quot;i&quot;</span><span style="color: #800000">); </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">arr = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">Array</span><span style="color: #800000">(); </span>
+
+<span style="color: #008000">//替换HTML标签 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(</span><span style="color: #0000ff">var </span><span style="color: #800000">i = 0; </span><span style="color: #0000ff">true</span><span style="color: #800000">; i++) { </span>
+<span style="color: #008000">//匹配html标签 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">tag = htmlReg.</span><span style="color: #000080">exec</span><span style="color: #800000">(temp); </span>
+<span style="color: #0000ff">if </span><span style="color: #800000">(tag) { </span>
+<span style="color: #800000">arr[i] = tag; </span>
+<span style="color: #800000">} </span><span style="color: #0000ff">else </span><span style="color: #800000">{ </span>
+<span style="color: #0000ff">break</span><span style="color: #800000">; </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(tag, </span><span style="color: #ff00ff">&quot;{[(&quot; </span><span style="color: #800000">+ i + </span><span style="color: #ff00ff">&quot;)]}&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">} </span>
+
+
+<span style="color: #008000">// 讲关键词拆分并入数组 </span>
+<span style="color: #800000">words = </span><span style="color: #000080">decodeURIComponent</span><span style="color: #800000">(keyword.</span><span style="color: #000080">replace</span><span style="color: #800000">(/\,/g, </span><span style="color: #ff00ff">' '</span><span style="color: #800000">)).</span><span style="color: #000080">split</span><span style="color: #800000">(/\s+/); </span>
+
+<span style="color: #008000">//替换关键字 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(w = 0; w &lt; words.</span><span style="color: #008080">length</span><span style="color: #800000">; w++) { </span>
+<span style="color: #008000">// 匹配关键词，保留关键词中可以出现的特殊字符 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">r = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">RegExp</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;(&quot; </span><span style="color: #800000">+ words[w].</span><span style="color: #000080">replace</span><span style="color: #800000">(/[(){}.+*?^$|\\\[\]]/g, </span><span style="color: #ff00ff">&quot;\\$&amp;&quot;</span><span style="color: #800000">) + </span><span style="color: #ff00ff">&quot;)&quot;</span><span style="color: #800000">, </span><span style="color: #ff00ff">&quot;ig&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(r, </span><span style="color: #ff00ff">&quot;&lt;b style='color:Red;'&gt;$1&lt;/b&gt;&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">} </span>
+
+<span style="color: #008000">//恢复HTML标签 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(</span><span style="color: #0000ff">var </span><span style="color: #800000">i = 0; i &lt; arr.</span><span style="color: #008080">length</span><span style="color: #800000">; i++) { </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;{[(&quot; </span><span style="color: #800000">+ i + </span><span style="color: #ff00ff">&quot;)]}&quot;</span><span style="color: #800000">, arr[i]); </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">textbox.</span><span style="color: #008080">innerHTML </span><span style="color: #800000">= temp; </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">highlight(</span><span style="color: #ff00ff">&quot;textbox&quot;</span><span style="color: #800000">,</span><span style="color: #ff00ff">&quot;百度,李彦宏,的&quot;</span><span style="color: #800000">); </span>
+<span style="color: #0000ff">&lt;/script&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/body&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/html&gt;</span><span style="color: #000000"> </span>
+</span>
+</pre>
+<h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9"><a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a><strong>你别<!--asdasd -->选<a href="">感兴趣</a>(/有用)的文章：</strong></h3>
+阿什杜德asdsad
+<pre>
+<span style="font-family: Consolas">
+<span style="color: #0000ff">&lt;!DOCTYPE </span><span style="color: #800080">html PUBLIC </span><span style="color: #000000">&quot;</span><span style="color: #800080">-</span><span style="color: #000000">//</span><span style="color: #800080">W3C</span><span style="color: #000000">//</span><span style="color: #800080">DTD XHTML 1</span><span style="color: #000000">.</span><span style="color: #800080">0 Transitional</span><span style="color: #000000">//</span><span style="color: #800080">EN</span><span style="color: #000000">&quot; &quot;</span><span style="color: #800080">http:</span><span style="color: #000000">//</span><span style="color: #800080">www</span><span style="color: #000000">.</span><span style="color: #800080">w3</span><span style="color: #000000">.</span><span style="color: #800080">org</span><span style="color: #000000">/</span><span style="color: #800080">TR</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1</span><span style="color: #000000">/</span><span style="color: #800080">DTD</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1-transitional</span><span style="color: #000000">.</span><span style="color: #800080">dtd</span><span style="color: #000000">&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;html </span><span style="color: #800080">xmlns</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;http://www.w3.org/1999/xhtml&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;head&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;meta </span><span style="color: #ff0000">http-equiv</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;Content-type&quot; </span><span style="color: #ff0000">content</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;text/html;charset=utf-8&quot; </span><span style="color: #0000ff">/&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;title&gt;</span><span style="color: #000000">关键字高亮显示</span><span style="color: #0000ff">&lt;/title&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/head&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;body&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;div </span><span style="color: #ff0000">class</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;result&quot; </span><span style="color: #ff0000">id</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;textbox&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;p&gt;</span><span style="color: #000000">百度（Nasdaq简称：BIDU）是全球最大的中文搜索引擎，2000年1月由李彦宏、徐勇两人创立于北京中关村，致力于向人们提供“简单，可依赖”的</span><span style="color: #0000ff">&lt;/p&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;p&gt;</span><span style="color: #000000">信息获取方式。“</span><span style="color: #0000ff">&lt;a </span><span style="color: #ff0000">href</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000">百度</span><span style="color: #0000ff">&lt;/a&gt;</span><span style="color: #000000">”二字源于中国宋朝词人辛弃疾的《青玉案&middot;元夕》词句“众里寻他千百度”，象征着百度对中文信息检索技术的执著追求。</span><span style="color: #0000ff">&lt;/p&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/div&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;script&gt; </span>
+<span style="color: #0000ff">function </span><span style="color: #800000">highlight(idVal, keyword) { </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">textbox = </span><span style="color: #008080">document</span><span style="color: #800000">.</span><span style="color: #000080">getElementById</span><span style="color: #800000">(idVal); </span>
+<span style="color: #0000ff">if </span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;&quot; </span><span style="color: #800000">== keyword) </span><span style="color: #0000ff">return</span><span style="color: #800000">; </span>
+<span style="color: #008000">//获取所有文字内容 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">temp = textbox.</span><span style="color: #008080">innerHTML</span><span style="color: #800000">; </span>
+<span style="color: #800000">console.</span><span style="color: #000080">log</span><span style="color: #800000">(temp); </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">htmlReg = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">RegExp</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;\&lt;.*?\&gt;&quot;</span><span style="color: #800000">, </span><span style="color: #ff00ff">&quot;i&quot;</span><span style="color: #800000">); </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">arr = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">Array</span><span style="color: #800000">(); </span>
+
+<span style="color: #008000">//替换HTML标签 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(</span><span style="color: #0000ff">var </span><span style="color: #800000">i = 0; </span><span style="color: #0000ff">true</span><span style="color: #800000">; i++) { </span>
+<span style="color: #008000">//匹配html标签 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">tag = htmlReg.</span><span style="color: #000080">exec</span><span style="color: #800000">(temp); </span>
+<span style="color: #0000ff">if </span><span style="color: #800000">(tag) { </span>
+<span style="color: #800000">arr[i] = tag; </span>
+<span style="color: #800000">} </span><span style="color: #0000ff">else </span><span style="color: #800000">{ </span>
+<span style="color: #0000ff">break</span><span style="color: #800000">; </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(tag, </span><span style="color: #ff00ff">&quot;{[(&quot; </span><span style="color: #800000">+ i + </span><span style="color: #ff00ff">&quot;)]}&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">} </span>
+
+
+<span style="color: #008000">// 讲关键词拆分并入数组 </span>
+<span style="color: #800000">words = </span><span style="color: #000080">decodeURIComponent</span><span style="color: #800000">(keyword.</span><span style="color: #000080">replace</span><span style="color: #800000">(/\,/g, </span><span style="color: #ff00ff">' '</span><span style="color: #800000">)).</span><span style="color: #000080">split</span><span style="color: #800000">(/\s+/); </span>
+
+<span style="color: #008000">//替换关键字 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(w = 0; w &lt; words.</span><span style="color: #008080">length</span><span style="color: #800000">; w++) { </span>
+<span style="color: #008000">// 匹配关键词，保留关键词中可以出现的特殊字符 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">r = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">RegExp</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;(&quot; </span><span style="color: #800000">+ words[w].</span><span style="color: #000080">replace</span><span style="color: #800000">(/[(){}.+*?^$|\\\[\]]/g, </span><span style="color: #ff00ff">&quot;\\$&amp;&quot;</span><span style="color: #800000">) + </span><span style="color: #ff00ff">&quot;)&quot;</span><span style="color: #800000">, </span><span style="color: #ff00ff">&quot;ig&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(r, </span><span style="color: #ff00ff">&quot;&lt;b style='color:Red;'&gt;$1&lt;/b&gt;&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">} </span>
+
+<span style="color: #008000">//恢复HTML标签 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(</span><span style="color: #0000ff">var </span><span style="color: #800000">i = 0; i &lt; arr.</span><span style="color: #008080">length</span><span style="color: #800000">; i++) { </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;{[(&quot; </span><span style="color: #800000">+ i + </span><span style="color: #ff00ff">&quot;)]}&quot;</span><span style="color: #800000">, arr[i]); </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">textbox.</span><span style="color: #008080">innerHTML </span><span style="color: #800000">= temp; </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">highlight(</span><span style="color: #ff00ff">&quot;textbox&quot;</span><span style="color: #800000">,</span><span style="color: #ff00ff">&quot;百度,李彦宏,的&quot;</span><span style="color: #800000">); </span>
+<span style="color: #0000ff">&lt;/script&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/body&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/html&gt;</span><span style="color: #000000"> </span>
+</span>
+</pre>
+<h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9"><a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a><strong>你别<!--asdasd -->选<a href="">感兴趣</a>(/有用)的文章：</strong></h3>
+阿什杜德asdsad
+<pre>
+<span style="font-family: Consolas">
+<span style="color: #0000ff">&lt;!DOCTYPE </span><span style="color: #800080">html PUBLIC </span><span style="color: #000000">&quot;</span><span style="color: #800080">-</span><span style="color: #000000">//</span><span style="color: #800080">W3C</span><span style="color: #000000">//</span><span style="color: #800080">DTD XHTML 1</span><span style="color: #000000">.</span><span style="color: #800080">0 Transitional</span><span style="color: #000000">//</span><span style="color: #800080">EN</span><span style="color: #000000">&quot; &quot;</span><span style="color: #800080">http:</span><span style="color: #000000">//</span><span style="color: #800080">www</span><span style="color: #000000">.</span><span style="color: #800080">w3</span><span style="color: #000000">.</span><span style="color: #800080">org</span><span style="color: #000000">/</span><span style="color: #800080">TR</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1</span><span style="color: #000000">/</span><span style="color: #800080">DTD</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1-transitional</span><span style="color: #000000">.</span><span style="color: #800080">dtd</span><span style="color: #000000">&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;html </span><span style="color: #800080">xmlns</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;http://www.w3.org/1999/xhtml&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;head&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;meta </span><span style="color: #ff0000">http-equiv</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;Content-type&quot; </span><span style="color: #ff0000">content</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;text/html;charset=utf-8&quot; </span><span style="color: #0000ff">/&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;title&gt;</span><span style="color: #000000">关键字高亮显示</span><span style="color: #0000ff">&lt;/title&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/head&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;body&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;div </span><span style="color: #ff0000">class</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;result&quot; </span><span style="color: #ff0000">id</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;textbox&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;p&gt;</span><span style="color: #000000">百度（Nasdaq简称：BIDU）是全球最大的中文搜索引擎，2000年1月由李彦宏、徐勇两人创立于北京中关村，致力于向人们提供“简单，可依赖”的</span><span style="color: #0000ff">&lt;/p&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;p&gt;</span><span style="color: #000000">信息获取方式。“</span><span style="color: #0000ff">&lt;a </span><span style="color: #ff0000">href</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000">百度</span><span style="color: #0000ff">&lt;/a&gt;</span><span style="color: #000000">”二字源于中国宋朝词人辛弃疾的《青玉案&middot;元夕》词句“众里寻他千百度”，象征着百度对中文信息检索技术的执著追求。</span><span style="color: #0000ff">&lt;/p&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/div&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;script&gt; </span>
+<span style="color: #0000ff">function </span><span style="color: #800000">highlight(idVal, keyword) { </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">textbox = </span><span style="color: #008080">document</span><span style="color: #800000">.</span><span style="color: #000080">getElementById</span><span style="color: #800000">(idVal); </span>
+<span style="color: #0000ff">if </span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;&quot; </span><span style="color: #800000">== keyword) </span><span style="color: #0000ff">return</span><span style="color: #800000">; </span>
+<span style="color: #008000">//获取所有文字内容 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">temp = textbox.</span><span style="color: #008080">innerHTML</span><span style="color: #800000">; </span>
+<span style="color: #800000">console.</span><span style="color: #000080">log</span><span style="color: #800000">(temp); </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">htmlReg = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">RegExp</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;\&lt;.*?\&gt;&quot;</span><span style="color: #800000">, </span><span style="color: #ff00ff">&quot;i&quot;</span><span style="color: #800000">); </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">arr = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">Array</span><span style="color: #800000">(); </span>
+
+<span style="color: #008000">//替换HTML标签 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(</span><span style="color: #0000ff">var </span><span style="color: #800000">i = 0; </span><span style="color: #0000ff">true</span><span style="color: #800000">; i++) { </span>
+<span style="color: #008000">//匹配html标签 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">tag = htmlReg.</span><span style="color: #000080">exec</span><span style="color: #800000">(temp); </span>
+<span style="color: #0000ff">if </span><span style="color: #800000">(tag) { </span>
+<span style="color: #800000">arr[i] = tag; </span>
+<span style="color: #800000">} </span><span style="color: #0000ff">else </span><span style="color: #800000">{ </span>
+<span style="color: #0000ff">break</span><span style="color: #800000">; </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(tag, </span><span style="color: #ff00ff">&quot;{[(&quot; </span><span style="color: #800000">+ i + </span><span style="color: #ff00ff">&quot;)]}&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">} </span>
+
+
+<span style="color: #008000">// 讲关键词拆分并入数组 </span>
+<span style="color: #800000">words = </span><span style="color: #000080">decodeURIComponent</span><span style="color: #800000">(keyword.</span><span style="color: #000080">replace</span><span style="color: #800000">(/\,/g, </span><span style="color: #ff00ff">' '</span><span style="color: #800000">)).</span><span style="color: #000080">split</span><span style="color: #800000">(/\s+/); </span>
+
+<span style="color: #008000">//替换关键字 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(w = 0; w &lt; words.</span><span style="color: #008080">length</span><span style="color: #800000">; w++) { </span>
+<span style="color: #008000">// 匹配关键词，保留关键词中可以出现的特殊字符 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">r = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">RegExp</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;(&quot; </span><span style="color: #800000">+ words[w].</span><span style="color: #000080">replace</span><span style="color: #800000">(/[(){}.+*?^$|\\\[\]]/g, </span><span style="color: #ff00ff">&quot;\\$&amp;&quot;</span><span style="color: #800000">) + </span><span style="color: #ff00ff">&quot;)&quot;</span><span style="color: #800000">, </span><span style="color: #ff00ff">&quot;ig&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(r, </span><span style="color: #ff00ff">&quot;&lt;b style='color:Red;'&gt;$1&lt;/b&gt;&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">} </span>
+
+<span style="color: #008000">//恢复HTML标签 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(</span><span style="color: #0000ff">var </span><span style="color: #800000">i = 0; i &lt; arr.</span><span style="color: #008080">length</span><span style="color: #800000">; i++) { </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;{[(&quot; </span><span style="color: #800000">+ i + </span><span style="color: #ff00ff">&quot;)]}&quot;</span><span style="color: #800000">, arr[i]); </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">textbox.</span><span style="color: #008080">innerHTML </span><span style="color: #800000">= temp; </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">highlight(</span><span style="color: #ff00ff">&quot;textbox&quot;</span><span style="color: #800000">,</span><span style="color: #ff00ff">&quot;百度,李彦宏,的&quot;</span><span style="color: #800000">); </span>
+<span style="color: #0000ff">&lt;/script&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/body&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/html&gt;</span><span style="color: #000000"> </span>
+</span>
+</pre>
+<h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9"><a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a><strong>你别<!--asdasd -->选<a href="">感兴趣</a>(/有用)的文章：</strong></h3>
+阿什杜德asdsad
+<pre>
+<span style="font-family: Consolas">
+<span style="color: #0000ff">&lt;!DOCTYPE </span><span style="color: #800080">html PUBLIC </span><span style="color: #000000">&quot;</span><span style="color: #800080">-</span><span style="color: #000000">//</span><span style="color: #800080">W3C</span><span style="color: #000000">//</span><span style="color: #800080">DTD XHTML 1</span><span style="color: #000000">.</span><span style="color: #800080">0 Transitional</span><span style="color: #000000">//</span><span style="color: #800080">EN</span><span style="color: #000000">&quot; &quot;</span><span style="color: #800080">http:</span><span style="color: #000000">//</span><span style="color: #800080">www</span><span style="color: #000000">.</span><span style="color: #800080">w3</span><span style="color: #000000">.</span><span style="color: #800080">org</span><span style="color: #000000">/</span><span style="color: #800080">TR</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1</span><span style="color: #000000">/</span><span style="color: #800080">DTD</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1-transitional</span><span style="color: #000000">.</span><span style="color: #800080">dtd</span><span style="color: #000000">&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;html </span><span style="color: #800080">xmlns</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;http://www.w3.org/1999/xhtml&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;head&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;meta </span><span style="color: #ff0000">http-equiv</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;Content-type&quot; </span><span style="color: #ff0000">content</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;text/html;charset=utf-8&quot; </span><span style="color: #0000ff">/&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;title&gt;</span><span style="color: #000000">关键字高亮显示</span><span style="color: #0000ff">&lt;/title&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/head&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;body&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;div </span><span style="color: #ff0000">class</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;result&quot; </span><span style="color: #ff0000">id</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;textbox&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;p&gt;</span><span style="color: #000000">百度（Nasdaq简称：BIDU）是全球最大的中文搜索引擎，2000年1月由李彦宏、徐勇两人创立于北京中关村，致力于向人们提供“简单，可依赖”的</span><span style="color: #0000ff">&lt;/p&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;p&gt;</span><span style="color: #000000">信息获取方式。“</span><span style="color: #0000ff">&lt;a </span><span style="color: #ff0000">href</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000">百度</span><span style="color: #0000ff">&lt;/a&gt;</span><span style="color: #000000">”二字源于中国宋朝词人辛弃疾的《青玉案&middot;元夕》词句“众里寻他千百度”，象征着百度对中文信息检索技术的执著追求。</span><span style="color: #0000ff">&lt;/p&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/div&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;script&gt; </span>
+<span style="color: #0000ff">function </span><span style="color: #800000">highlight(idVal, keyword) { </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">textbox = </span><span style="color: #008080">document</span><span style="color: #800000">.</span><span style="color: #000080">getElementById</span><span style="color: #800000">(idVal); </span>
+<span style="color: #0000ff">if </span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;&quot; </span><span style="color: #800000">== keyword) </span><span style="color: #0000ff">return</span><span style="color: #800000">; </span>
+<span style="color: #008000">//获取所有文字内容 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">temp = textbox.</span><span style="color: #008080">innerHTML</span><span style="color: #800000">; </span>
+<span style="color: #800000">console.</span><span style="color: #000080">log</span><span style="color: #800000">(temp); </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">htmlReg = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">RegExp</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;\&lt;.*?\&gt;&quot;</span><span style="color: #800000">, </span><span style="color: #ff00ff">&quot;i&quot;</span><span style="color: #800000">); </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">arr = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">Array</span><span style="color: #800000">(); </span>
+
+<span style="color: #008000">//替换HTML标签 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(</span><span style="color: #0000ff">var </span><span style="color: #800000">i = 0; </span><span style="color: #0000ff">true</span><span style="color: #800000">; i++) { </span>
+<span style="color: #008000">//匹配html标签 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">tag = htmlReg.</span><span style="color: #000080">exec</span><span style="color: #800000">(temp); </span>
+<span style="color: #0000ff">if </span><span style="color: #800000">(tag) { </span>
+<span style="color: #800000">arr[i] = tag; </span>
+<span style="color: #800000">} </span><span style="color: #0000ff">else </span><span style="color: #800000">{ </span>
+<span style="color: #0000ff">break</span><span style="color: #800000">; </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(tag, </span><span style="color: #ff00ff">&quot;{[(&quot; </span><span style="color: #800000">+ i + </span><span style="color: #ff00ff">&quot;)]}&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">} </span>
+
+
+<span style="color: #008000">// 讲关键词拆分并入数组 </span>
+<span style="color: #800000">words = </span><span style="color: #000080">decodeURIComponent</span><span style="color: #800000">(keyword.</span><span style="color: #000080">replace</span><span style="color: #800000">(/\,/g, </span><span style="color: #ff00ff">' '</span><span style="color: #800000">)).</span><span style="color: #000080">split</span><span style="color: #800000">(/\s+/); </span>
+
+<span style="color: #008000">//替换关键字 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(w = 0; w &lt; words.</span><span style="color: #008080">length</span><span style="color: #800000">; w++) { </span>
+<span style="color: #008000">// 匹配关键词，保留关键词中可以出现的特殊字符 </span>
+<span style="color: #0000ff">var </span><span style="color: #800000">r = </span><span style="color: #0000ff">new </span><span style="color: #ff0000">RegExp</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;(&quot; </span><span style="color: #800000">+ words[w].</span><span style="color: #000080">replace</span><span style="color: #800000">(/[(){}.+*?^$|\\\[\]]/g, </span><span style="color: #ff00ff">&quot;\\$&amp;&quot;</span><span style="color: #800000">) + </span><span style="color: #ff00ff">&quot;)&quot;</span><span style="color: #800000">, </span><span style="color: #ff00ff">&quot;ig&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(r, </span><span style="color: #ff00ff">&quot;&lt;b style='color:Red;'&gt;$1&lt;/b&gt;&quot;</span><span style="color: #800000">); </span>
+<span style="color: #800000">} </span>
+
+<span style="color: #008000">//恢复HTML标签 </span>
+<span style="color: #0000ff">for </span><span style="color: #800000">(</span><span style="color: #0000ff">var </span><span style="color: #800000">i = 0; i &lt; arr.</span><span style="color: #008080">length</span><span style="color: #800000">; i++) { </span>
+<span style="color: #800000">temp = temp.</span><span style="color: #000080">replace</span><span style="color: #800000">(</span><span style="color: #ff00ff">&quot;{[(&quot; </span><span style="color: #800000">+ i + </span><span style="color: #ff00ff">&quot;)]}&quot;</span><span style="color: #800000">, arr[i]); </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">textbox.</span><span style="color: #008080">innerHTML </span><span style="color: #800000">= temp; </span>
+<span style="color: #800000">} </span>
+<span style="color: #800000">highlight(</span><span style="color: #ff00ff">&quot;textbox&quot;</span><span style="color: #800000">,</span><span style="color: #ff00ff">&quot;百度,李彦宏,的&quot;</span><span style="color: #800000">); </span>
+<span style="color: #0000ff">&lt;/script&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/body&gt;</span><span style="color: #000000"> </span>
+<span style="color: #0000ff">&lt;/html&gt;</span><span style="color: #000000"> </span>
+</span>
+</pre>
+</div>
+
+
+</body>
+</html>
