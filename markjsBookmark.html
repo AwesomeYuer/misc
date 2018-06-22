@@ -103,7 +103,7 @@
       }
     }
 
-    function jumpTo2(index) {
+    function jumpToIndex(index) {
       if ($results.length) {
         var position,
           $current = $results.eq(index);
@@ -176,13 +176,14 @@
       $input.val("").focus();
     });
 
-    $jumpToBtn.on("click", function () {
-      var jumpToIndex = parseInt(document.getElementById("jumpToIndex").value);
-      jumpTo2(jumpToIndex);
+    var $jumpToIndexBtn = $("#jumpToIndexBtn");
+    $jumpToIndexBtn.on("click", function () {
+      var index = parseInt(document.getElementById("jumpToIndex").value);
+      jumpToIndex(index);
     });
 
-    var $markSelectionBtn = $("#markSelectionBtn");
-    $markSelectionBtn.on("click", function () {
+    var $bookmarkSelectionBtn = $("#bookmarkSelectionBtn");
+    $bookmarkSelectionBtn.on("click", function () {
       var userSelection;
       if (window.getSelection) {
         //现代浏览器
@@ -216,19 +217,19 @@
     /**
      * Next and previous search jump to
      */
-    $nextBtn.add($prevBtn).on("click", function () {
-      if ($results.length) {
-        currentIndex += $(this).is($prevBtn) ? -1 : 1;
-        if (currentIndex < 0) {
-          currentIndex = $results.length - 1;
-        }
-        if (currentIndex > $results.length - 1) {
-          currentIndex = 0;
-        }
-        console.log("move:" + currentIndex);
-        jumpTo();
-      }
-    });
+    // $nextBtn.add($prevBtn).on("click", function () {
+    //   if ($results.length) {
+    //     currentIndex += $(this).is($prevBtn) ? -1 : 1;
+    //     if (currentIndex < 0) {
+    //       currentIndex = $results.length - 1;
+    //     }
+    //     if (currentIndex > $results.length - 1) {
+    //       currentIndex = 0;
+    //     }
+    //     console.log("move:" + currentIndex);
+    //     jumpTo();
+    //   }
+    // });
   });
 
 
@@ -247,15 +248,20 @@
   <!-- <input type="search" placeholder="Lorem"> -->
   <!-- <button data-search="next">&darr;</button> -->
   <!-- <button data-search="prev">&uarr;</button>&nbsp; -->
-  <!-- <input type="text" id="jumpToIndex" /><button data-search="jumpTo">JumpTo</button> -->
+  
   <!-- &nbsp; -->
-  <button id="markSelectionBtn">mark 选中的文本</button>
+  <button id="bookmarkSelectionBtn">bookmark 选中的文本</button>
   &nbsp;
   <input type="button" value="jump To Bookmark" id="jumpToBookmarkBtn" />
-  &nbsp;
+    
+  <br />
+  <br />
+  <input type="text" id="jumpToIndex" /><input type="button" value="jump To index" id="jumpToIndexBtn" />
+  
+  <br />
+  <br />
+  
   <button data-search="clear">clear</button>
-
-
 </div>
 
 <div class="content" oncontextmenu="">
