@@ -182,6 +182,18 @@
       jumpToIndex(index);
     });
 
+    var $markSearchKeyWordBtn = $("#markSearchKeyWordBtn");
+    $markSearchKeyWordBtn.on("click", function () {
+      var searchVal = document.getElementById("inputKeyWord").value;
+      $content.unmark({
+        done: function () {
+          $content.mark(searchVal, options);
+        }
+      });
+
+    });
+
+
     var $bookmarkSelectionBtn = $("#bookmarkSelectionBtn");
     $bookmarkSelectionBtn.on("click", function () {
       var userSelection;
@@ -194,7 +206,7 @@
       }
 
       var text = userSelection.toString();
-
+      alert(text);
       var nNd = document.createElement("bookmark");
       var w = userSelection.getRangeAt(0);
       w.surroundContents(nNd);
@@ -244,8 +256,10 @@
 <!-- <input type="text" id="keyWord" name="" /><input type="button" value="mark" accesskey="m" onclick="mark();" /> -->
 
 <div class="header">
-  <!-- Search: -->
-  <!-- <input type="search" placeholder="Lorem"> -->
+  Search:
+  <input type="text" id="inputKeyWord"  placeholder="input KeyWord"> <button id="markSearchKeyWordBtn">mark Search</button>
+  <br />
+  <br />
   <!-- <button data-search="next">&darr;</button> -->
   <!-- <button data-search="prev">&uarr;</button>&nbsp; -->
   
