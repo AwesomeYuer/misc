@@ -8,9 +8,9 @@
   <meta name="Keywords" content="EditPlus®,Microshaoft®">
   <meta name="Description" content="EditPlus®,Microshaoft®">
   <title>Document</title>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.js"></script>
-	<script src="https://code.jquery.com/jquery-3.3.1.js"></script> -->
-  <script src="https://cdn.jsdelivr.net/g/jquery@3.1.0,mark.js@8.6.0(jquery.mark.min.js)"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/g/jquery@3.1.0,mark.js@8.6.0(jquery.mark.min.js)"></script> -->
 
   <style>
     mark {
@@ -34,204 +34,15 @@
       margin-top: 50px;
     }
   </style>
+
   <script type="text/javascript">
-  <!--
-      $(function () {
-
-        // the input field
-        var $input = $("input[type='search']"),
-            // clear button
-            $clearBtn = $("button[data-search='clear']"),
-            // prev button
-            //$prevBtn = $("button[data-search='prev']"),
-            // next button
-            //$nextBtn = $("button[data-search='next']"),
-            //$jumpToBtn = $("button[data-search='jumpTo']"),
-            // the context where to search
-            $content = $(".content"),
-            // jQuery object to save <mark> elements
-            $results,
-            // the class that will be appended to the current
-            // focused element
-            currentClass = "current",
-            // top offset for the jump (the search bar)
-            offsetTop = 200,
-            // the current index of the focused element
-            currentIndex = 0;
-
-
-        var options = {
-            "separateWordSearch": false,
-            "diacritics": true,
-            "debug": false,
-            "acrossElements": true,
-            "filter": function (node, txt, hit) {
-              if (node.parentNode.tagName == "BOOKMARK" &&
-                  node.parentNode.getAttribute("keyWord") == txt
-                ) {
-                  //debugger;
-                  //filter before or from 0 ,so need hit ++
-                  alert("关键词: [" + txt +"] 位置书签命中序号:" + (hit + 1));
-              }
-              return true;
-            },
-            "done": function (totalMatches) {
-              $results = $content.find("mark");
-              currentIndex = 0;
-              alert("命中总次数:" + totalMatches);
-              //jumpTo();
-            }
-          };
-
-        /**
-         * Jumps to the element matching the currentIndex
-         */
-        function jumpTo() {
-          if ($results.length) {
-            var position,
-                $current = $results.eq(currentIndex);
-            $results.removeClass(currentClass);
-            if ($current.length) {
-              $current.addClass(currentClass);
-              position = $current.offset().top - offsetTop;
-              window.scrollTo(0, position);
-            }
-          }
-        }
-
-        function jumpToIndex(index) {
-          if ($results.length) {
-            var position,
-              $current = $results.eq(index);
-            $results.removeClass(currentClass);
-            if ($current.length) {
-              $current.addClass(currentClass);
-              position = $current.offset().top - offsetTop + 500;
-              window.scrollTo(0, position);
-            }
-          }
-        }
-
-        function jumpToBookmark() {
-          //currentIndex = 1;
-          while (1 == 1) {
-            if ($results.length) {
-              currentIndex += 1
-              if (currentIndex < 0) {
-                currentIndex = $results.length - 1;
-              }
-              if (currentIndex > $results.length - 1) {
-                currentIndex = 0;
-              }
-              var position,
-                  $current = $results.eq(currentIndex);
-              $results.removeClass(currentClass);
-              if ($current.length) {
-                $current.addClass(currentClass);
-                position = $current.offset().top - offsetTop;
-                //debugger;
-                if ($current.parent()[0].tagName == "BOOKMARK") {
-                  break;
-                }
-              }
-              else {
-                break;
-              }
-            }
-          }
-          window.scrollTo(0, position);
-          alert("选中的命中序号:" + currentIndex);
-        }
-
-        /**
-         * Searches for the entered keyword in the
-         * specified context on input
-         */
-        // $input.on("input", function () {
-        //   var searchVal = this.value;
-        //   $content.unmark({
-        //     done: function () {
-        //       $content.mark(searchVal, options);
-        //     }
-        //   });
-        // });
-
-        /**
-         * Clears the search
-         */
-        $clearBtn.on("click", function () {
-          $content.unmark();
-          $input.val("").focus();
-        });
-
-        var $jumpToIndexBtn = $("#jumpToIndexBtn");
-        $jumpToIndexBtn.on("click", function () {
-          var index = parseInt(document.getElementById("jumpToIndex").value);
-          jumpToIndex(index);
-        });
-
-        var $markSearchKeyWordBtn = $("#markSearchKeyWordBtn");
-        $markSearchKeyWordBtn.on("click", function () {
-          var searchVal = document.getElementById("inputKeyWord").value;
-          $content.unmark({
-            done: function () {
-              $content.mark(searchVal, options);
-            }
-          });
-        });
-
-        var $bookmarkSelectionBtn = $("#bookmarkSelectionBtn");
-        $bookmarkSelectionBtn.on("click", function () {
-          var userSelection;
-          if (window.getSelection) {
-            userSelection = window.getSelection();
-          } else if (document.selection) {
-            //IE
-            userSelection = document.selection.createRange();
-          }
-          var text = userSelection.toString();
-          alert("选中文本: " + text);
-          var bookmarkElement = document.createElement("bookmark");
-          var wrapper = userSelection.getRangeAt(0);
-          bookmarkElement.setAttribute("keyWord", text);
-          wrapper.surroundContents(bookmarkElement);
-
-          var searchVal = text;
-          $content.unmark({
-            done: function () {
-              $content.mark(searchVal, options);
-            }
-          });
-        });
-
-        var $jumpToBookmarkBtn = $("#jumpToBookmarkBtn");
-        $jumpToBookmarkBtn.on("click", function () {
-          jumpToBookmark();
-        });
-
-        /**
-         * Next and previous search jump to
-         */
-        // $nextBtn.add($prevBtn).on("click", function () {
-        //   if ($results.length) {
-        //     currentIndex += $(this).is($prevBtn) ? -1 : 1;
-        //     if (currentIndex < 0) {
-        //       currentIndex = $results.length - 1;
-        //     }
-        //     if (currentIndex > $results.length - 1) {
-        //       currentIndex = 0;
-        //     }
-        //     console.log("move:" + currentIndex);
-        //     jumpTo();
-        //   }
-        // });
-      });
+  // Create an instance of mark.js and pass an argument containing
+  // the DOM object of the context (where to search for matches)
+  var content = document.querySelector(".content");
+  var markInstance = new Mark(content);
 
 
 
-
-
-//-->
   </script>
 
 </head>
