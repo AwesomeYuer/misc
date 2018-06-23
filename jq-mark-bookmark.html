@@ -110,7 +110,7 @@
         $results.removeClass(currentClass);
         if ($current.length) {
           $current.addClass(currentClass);
-          position = $current.offset().top - offsetTop;
+          position = $current.offset().top - offsetTop + 100;
           window.scrollTo(0, position);
         }
       }
