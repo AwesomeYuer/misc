@@ -1,288 +1,276 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-	<meta charset="UTF-8">
-	<meta name="Generator" content="EditPlus®,Microshaoft®">
-	<meta name="Author" content="EditPlus®,Microshaoft®">
-	<meta name="Keywords" content="EditPlus®,Microshaoft®">
-	<meta name="Description" content="EditPlus®,Microshaoft®">
-	<title>Document</title>
-	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.js"></script>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®,Microshaoft®">
+  <meta name="Author" content="EditPlus®,Microshaoft®">
+  <meta name="Keywords" content="EditPlus®,Microshaoft®">
+  <meta name="Description" content="EditPlus®,Microshaoft®">
+  <title>Document</title>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.js"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.js"></script> -->
   <script src="https://cdn.jsdelivr.net/g/jquery@3.1.0,mark.js@8.6.0(jquery.mark.min.js)"></script>
 
-	<style>
-	mark {
-	  background: yellow;
-	}
-
-	mark.current {
-	  background: orange;
-	}
-
-	.header {
-	  padding: 10px;
-	  width: 100%;
-	  background: #eee;
-	  position: fixed;
-	  top: 0;
-	  left: 0;
-	}
-
-	.content {
-	  margin-top: 50px;
-	}
-
-	</style>
-<script type="text/javascript">
-<!--
-
-
-
-
-
-  $(function () {
-
-    // the input field
-    var $input = $("input[type='search']"),
-      // clear button
-      $clearBtn = $("button[data-search='clear']"),
-      // prev button
-      $prevBtn = $("button[data-search='prev']"),
-      // next button
-      $nextBtn = $("button[data-search='next']"),
-
-      $jumpToBtn = $("button[data-search='jumpTo']"),
-      // the context where to search
-      $content = $(".content"),
-      // jQuery object to save <mark> elements
-      $results,
-      // the class that will be appended to the current
-      // focused element
-      currentClass = "current",
-      // top offset for the jump (the search bar)
-      offsetTop = 50,
-      // the current index of the focused element
-      currentIndex = 0;
-
-
-    var options = {
-      "separateWordSearch": false,
-      "diacritics": true,
-      "debug": false,
-      "acrossElements": true,
-      "filter": function (node, txt, hit) {
-        console.log("begin=================");
-        console.log(node);
-        console.log(txt);
-        console.log(hit);
-        console.log("end=================");
-        return true;
-      },
-      "done": function () {
-        $results = $content.find("mark");
-        currentIndex = 0;
-        jumpTo();
-      }
-
-    };
-
-    /**
-     * Jumps to the element matching the currentIndex
-     */
-    function jumpTo() {
-      if ($results.length) {
-        var position,
-          $current = $results.eq(currentIndex);
-        $results.removeClass(currentClass);
-        if ($current.length) {
-          $current.addClass(currentClass);
-          position = $current.offset().top - offsetTop;
-          window.scrollTo(0, position);
-        }
-      }
+  <style>
+    mark {
+      background: yellow;
     }
 
-    function jumpToIndex(index) {
-      if ($results.length) {
-        var position,
-          $current = $results.eq(index);
-        $results.removeClass(currentClass);
-        if ($current.length) {
-          $current.addClass(currentClass);
-          position = $current.offset().top - offsetTop + 100;
-          window.scrollTo(0, position);
-        }
-      }
+    mark.current {
+      background: orange;
     }
 
-    function jumpToBookmark() {
+    .header {
+      padding: 10px;
+      width: 100%;
+      background: #eee;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
 
-      while (1 == 1) {
+    .content {
+      margin-top: 50px;
+    }
+  </style>
+  <script type="text/javascript">
+  <!--
+      $(function () {
 
-        if ($results.length) {
-          currentIndex += 1
-          if (currentIndex < 0) {
-            currentIndex = $results.length - 1;
-          }
-          if (currentIndex > $results.length - 1) {
+        // the input field
+        var $input = $("input[type='search']"),
+            // clear button
+            $clearBtn = $("button[data-search='clear']"),
+            // prev button
+            //$prevBtn = $("button[data-search='prev']"),
+            // next button
+            //$nextBtn = $("button[data-search='next']"),
+            //$jumpToBtn = $("button[data-search='jumpTo']"),
+            // the context where to search
+            $content = $(".content"),
+            // jQuery object to save <mark> elements
+            $results,
+            // the class that will be appended to the current
+            // focused element
+            currentClass = "current",
+            // top offset for the jump (the search bar)
+            offsetTop = 100,
+            // the current index of the focused element
             currentIndex = 0;
-          }
-          var position,
-            $current = $results.eq(currentIndex);
-          $results.removeClass(currentClass);
-          if ($current.length) {
-            $current.addClass(currentClass);
-            position = $current.offset().top - offsetTop;
-            //debugger;
-            if ($current.parent()[0].tagName == "BOOKMARK") {
-              break;
+
+
+        var options = {
+            "separateWordSearch": false,
+            "diacritics": true,
+            "debug": false,
+            "acrossElements": true,
+            "filter": function (node, txt, hit) {
+              console.log("begin=================");
+              console.log(node);
+              console.log(txt);
+              console.log(hit);
+              console.log("end=================");
+              return true;
+            },
+            "done": function () {
+              $results = $content.find("mark");
+              currentIndex = 0;
+              jumpTo();
+            }
+          };
+
+        /**
+         * Jumps to the element matching the currentIndex
+         */
+        function jumpTo() {
+          if ($results.length) {
+            var position,
+                $current = $results.eq(currentIndex);
+            $results.removeClass(currentClass);
+            if ($current.length) {
+              $current.addClass(currentClass);
+              position = $current.offset().top - offsetTop;
+              window.scrollTo(0, position);
             }
           }
-
-
         }
 
-
-      }
-      window.scrollTo(0, position);
-      alert(currentIndex);
-
-    }
-
-
-
-    /**
-     * Searches for the entered keyword in the
-     * specified context on input
-     */
-
-
-
-    $input.on("input", function () {
-      var searchVal = this.value;
-      $content.unmark({
-        done: function () {
-          $content.mark(searchVal, options);
+        function jumpToIndex(index) {
+          if ($results.length) {
+            var position,
+              $current = $results.eq(index);
+            $results.removeClass(currentClass);
+            if ($current.length) {
+              $current.addClass(currentClass);
+              position = $current.offset().top - offsetTop + 500;
+              window.scrollTo(0, position);
+            }
+          }
         }
+
+        function jumpToBookmark() {
+          while (1 == 1) {
+            if ($results.length) {
+              currentIndex += 1
+              if (currentIndex < 0) {
+                currentIndex = $results.length - 1;
+              }
+              if (currentIndex > $results.length - 1) {
+                currentIndex = 0;
+              }
+              var position,
+                  $current = $results.eq(currentIndex);
+              $results.removeClass(currentClass);
+              if ($current.length) {
+                $current.addClass(currentClass);
+                position = $current.offset().top - offsetTop;
+                //debugger;
+                if ($current.parent()[0].tagName == "BOOKMARK") {
+                  break;
+                }
+              }
+              // else {
+              //   break;
+              // }
+            }
+          }
+          window.scrollTo(0, position);
+          alert(currentIndex);
+        }
+
+        /**
+         * Searches for the entered keyword in the
+         * specified context on input
+         */
+        // $input.on("input", function () {
+        //   var searchVal = this.value;
+        //   $content.unmark({
+        //     done: function () {
+        //       $content.mark(searchVal, options);
+        //     }
+        //   });
+        // });
+
+        /**
+         * Clears the search
+         */
+        $clearBtn.on("click", function () {
+          $content.unmark();
+          $input.val("").focus();
+        });
+
+        var $jumpToIndexBtn = $("#jumpToIndexBtn");
+        $jumpToIndexBtn.on("click", function () {
+          var index = parseInt(document.getElementById("jumpToIndex").value);
+          jumpToIndex(index);
+        });
+
+        var $markSearchKeyWordBtn = $("#markSearchKeyWordBtn");
+        $markSearchKeyWordBtn.on("click", function () {
+          var searchVal = document.getElementById("inputKeyWord").value;
+          $content.unmark({
+            done: function () {
+              $content.mark(searchVal, options);
+            }
+          });
+        });
+
+        var $bookmarkSelectionBtn = $("#bookmarkSelectionBtn");
+        $bookmarkSelectionBtn.on("click", function () {
+          var userSelection;
+          if (window.getSelection) {
+            userSelection = window.getSelection();
+          } else if (document.selection) {
+            //IE
+            userSelection = document.selection.createRange();
+          }
+          var text = userSelection.toString();
+          alert("选中文本: " + text);
+          var bookmarkElement = document.createElement("bookmark");
+          var wrapper = userSelection.getRangeAt(0);
+          bookmarkElement.setAttribute("keyWord", text);
+          wrapper.surroundContents(bookmarkElement);
+
+          var searchVal = text;
+          $content.unmark({
+            done: function () {
+              $content.mark(searchVal, options);
+              alert("已标记全部: " + text);
+            }
+          });
+        });
+
+        var $jumpToBookmarkBtn = $("#jumpToBookmarkBtn");
+        $jumpToBookmarkBtn.on("click", function () {
+          jumpToBookmark();
+        });
+
+        /**
+         * Next and previous search jump to
+         */
+        // $nextBtn.add($prevBtn).on("click", function () {
+        //   if ($results.length) {
+        //     currentIndex += $(this).is($prevBtn) ? -1 : 1;
+        //     if (currentIndex < 0) {
+        //       currentIndex = $results.length - 1;
+        //     }
+        //     if (currentIndex > $results.length - 1) {
+        //       currentIndex = 0;
+        //     }
+        //     console.log("move:" + currentIndex);
+        //     jumpTo();
+        //   }
+        // });
       });
-    });
-
-    /**
-     * Clears the search
-     */
-    $clearBtn.on("click", function () {
-      $content.unmark();
-      $input.val("").focus();
-    });
-
-    var $jumpToIndexBtn = $("#jumpToIndexBtn");
-    $jumpToIndexBtn.on("click", function () {
-      var index = parseInt(document.getElementById("jumpToIndex").value);
-      jumpToIndex(index);
-    });
-
-    var $markSearchKeyWordBtn = $("#markSearchKeyWordBtn");
-    $markSearchKeyWordBtn.on("click", function () {
-      var searchVal = document.getElementById("inputKeyWord").value;
-      $content.unmark({
-        done: function () {
-          $content.mark(searchVal, options);
-        }
-      });
-
-    });
-
-
-    var $bookmarkSelectionBtn = $("#bookmarkSelectionBtn");
-    $bookmarkSelectionBtn.on("click", function () {
-      var userSelection;
-      if (window.getSelection) {
-        //现代浏览器
-        userSelection = window.getSelection();
-      } else if (document.selection) {
-        //IE浏览器 考虑到Opera，应该放在后面
-        userSelection = document.selection.createRange();
-      }
-
-      var text = userSelection.toString();
-      alert(text);
-      var nNd = document.createElement("bookmark");
-      var w = userSelection.getRangeAt(0);
-      w.surroundContents(nNd);
-
-      var searchVal = text;
-      $content.unmark({
-        done: function () {
-          $content.mark(searchVal, options);
-        }
-      });
-    });
-
-    var $jumpToBookmarkBtn = $("#jumpToBookmarkBtn");
-    $jumpToBookmarkBtn.on("click", function () {
-
-      jumpToBookmark();
-
-    });
-
-    /**
-     * Next and previous search jump to
-     */
-    // $nextBtn.add($prevBtn).on("click", function () {
-    //   if ($results.length) {
-    //     currentIndex += $(this).is($prevBtn) ? -1 : 1;
-    //     if (currentIndex < 0) {
-    //       currentIndex = $results.length - 1;
-    //     }
-    //     if (currentIndex > $results.length - 1) {
-    //       currentIndex = 0;
-    //     }
-    //     console.log("move:" + currentIndex);
-    //     jumpTo();
-    //   }
-    // });
-  });
 
 
 
 
 
 //-->
-</script>
+  </script>
 
 </head>
+
 <body>
-<!-- <input type="text" id="keyWord" name="" /><input type="button" value="mark" accesskey="m" onclick="mark();" /> -->
+  <!-- <input type="text" id="keyWord" name="" /><input type="button" value="mark" accesskey="m" onclick="mark();" /> -->
 
-<div class="header">
-  Search:
-  <input type="text" id="inputKeyWord"  placeholder="input KeyWord"> <button id="markSearchKeyWordBtn">mark Search</button>
-  <br />
-  <br />
-  <!-- <button data-search="next">&darr;</button> -->
-  <!-- <button data-search="prev">&uarr;</button>&nbsp; -->
-  
-  <!-- &nbsp; -->
-  <button id="bookmarkSelectionBtn">bookmark 选中的文本</button>
-  &nbsp;
-  <input type="button" value="jump To Bookmark" id="jumpToBookmarkBtn" />
-    
-  <br />
-  <br />
-  <input type="text" id="jumpToIndex" /><input type="button" value="jump To index" id="jumpToIndexBtn" />
-  
-  <br />
-  <br />
-  
-  <button data-search="clear">clear</button>
-</div>
+  <div class="header">
+    输入查找关键字高亮测试:
+    <input type="text" id="inputKeyWord" placeholder="input KeyWord">
+    <button id="markSearchKeyWordBtn">mark Search</button>
+    <br />
+    <br />
+    <!-- <button data-search="next">&darr;</button> -->
+    <!-- <button data-search="prev">&uarr;</button>&nbsp; -->
+    文本选中书签及跳转测试:
+    <!-- &nbsp; -->
+    <button id="bookmarkSelectionBtn">bookmark 选中的文本</button>
+    &nbsp;
+    <input type="button" value="jump To Bookmark" id="jumpToBookmarkBtn" />
 
-<div class="content" oncontextmenu="">
+    <br />
+    <br />
+    <input type="text" id="jumpToIndex" />
+    <input type="button" value="jump To index" id="jumpToIndexBtn" />
 
-<h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9"><a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a><strong>你别<!--asdasd -->选<a href="">感兴趣</a>(/有用)的文章：</strong></h3>
-阿什杜德asdsad
-<pre>
+    <br />
+    <br />
+
+    <button data-search="clear">clear</button>
+  </div>
+
+  <div class="content" oncontextmenu="">
+    ===================================
+    <h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9">
+      <a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a>
+      <strong>你别
+        <!--asdasd -->选
+        <a href="">感兴趣</a>(/有用)的文章：</strong>
+    </h3>
+    阿什杜德asdsad
+    <pre>
 <span style="font-family: Consolas">
 <span style="color: #0000ff">&lt;!DOCTYPE </span><span style="color: #800080">html PUBLIC </span><span style="color: #000000">&quot;</span><span style="color: #800080">-</span><span style="color: #000000">//</span><span style="color: #800080">W3C</span><span style="color: #000000">//</span><span style="color: #800080">DTD XHTML 1</span><span style="color: #000000">.</span><span style="color: #800080">0 Transitional</span><span style="color: #000000">//</span><span style="color: #800080">EN</span><span style="color: #000000">&quot; &quot;</span><span style="color: #800080">http:</span><span style="color: #000000">//</span><span style="color: #800080">www</span><span style="color: #000000">.</span><span style="color: #800080">w3</span><span style="color: #000000">.</span><span style="color: #800080">org</span><span style="color: #000000">/</span><span style="color: #800080">TR</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1</span><span style="color: #000000">/</span><span style="color: #800080">DTD</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1-transitional</span><span style="color: #000000">.</span><span style="color: #800080">dtd</span><span style="color: #000000">&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
 <span style="color: #0000ff">&lt;html </span><span style="color: #800080">xmlns</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;http://www.w3.org/1999/xhtml&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
@@ -340,9 +328,14 @@
 <span style="color: #0000ff">&lt;/html&gt;</span><span style="color: #000000"> </span>
 </span>
 </pre>
-<h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9"><a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a><strong>你别<!--asdasd -->选<a href="">感兴趣</a>(/有用)的文章：</strong></h3>
-阿什杜德asdsad
-<pre>
+    <h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9">
+      <a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a>
+      <strong>你别
+        <!--asdasd -->选
+        <a href="">感兴趣</a>(/有用)的文章：</strong>
+    </h3>
+    阿什杜德asdsad
+    <pre>
 <span style="font-family: Consolas">
 <span style="color: #0000ff">&lt;!DOCTYPE </span><span style="color: #800080">html PUBLIC </span><span style="color: #000000">&quot;</span><span style="color: #800080">-</span><span style="color: #000000">//</span><span style="color: #800080">W3C</span><span style="color: #000000">//</span><span style="color: #800080">DTD XHTML 1</span><span style="color: #000000">.</span><span style="color: #800080">0 Transitional</span><span style="color: #000000">//</span><span style="color: #800080">EN</span><span style="color: #000000">&quot; &quot;</span><span style="color: #800080">http:</span><span style="color: #000000">//</span><span style="color: #800080">www</span><span style="color: #000000">.</span><span style="color: #800080">w3</span><span style="color: #000000">.</span><span style="color: #800080">org</span><span style="color: #000000">/</span><span style="color: #800080">TR</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1</span><span style="color: #000000">/</span><span style="color: #800080">DTD</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1-transitional</span><span style="color: #000000">.</span><span style="color: #800080">dtd</span><span style="color: #000000">&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
 <span style="color: #0000ff">&lt;html </span><span style="color: #800080">xmlns</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;http://www.w3.org/1999/xhtml&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
@@ -400,9 +393,14 @@
 <span style="color: #0000ff">&lt;/html&gt;</span><span style="color: #000000"> </span>
 </span>
 </pre>
-<h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9"><a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a><strong>你别<!--asdasd -->选<a href="">感兴趣</a>(/有用)的文章：</strong></h3>
-阿什杜德asdsad
-<pre>
+    <h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9">
+      <a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a>
+      <strong>你别
+        <!--asdasd -->选
+        <a href="">感兴趣</a>(/有用)的文章：</strong>
+    </h3>
+    阿什杜德asdsad
+    <pre>
 <span style="font-family: Consolas">
 <span style="color: #0000ff">&lt;!DOCTYPE </span><span style="color: #800080">html PUBLIC </span><span style="color: #000000">&quot;</span><span style="color: #800080">-</span><span style="color: #000000">//</span><span style="color: #800080">W3C</span><span style="color: #000000">//</span><span style="color: #800080">DTD XHTML 1</span><span style="color: #000000">.</span><span style="color: #800080">0 Transitional</span><span style="color: #000000">//</span><span style="color: #800080">EN</span><span style="color: #000000">&quot; &quot;</span><span style="color: #800080">http:</span><span style="color: #000000">//</span><span style="color: #800080">www</span><span style="color: #000000">.</span><span style="color: #800080">w3</span><span style="color: #000000">.</span><span style="color: #800080">org</span><span style="color: #000000">/</span><span style="color: #800080">TR</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1</span><span style="color: #000000">/</span><span style="color: #800080">DTD</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1-transitional</span><span style="color: #000000">.</span><span style="color: #800080">dtd</span><span style="color: #000000">&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
 <span style="color: #0000ff">&lt;html </span><span style="color: #800080">xmlns</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;http://www.w3.org/1999/xhtml&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
@@ -460,9 +458,14 @@
 <span style="color: #0000ff">&lt;/html&gt;</span><span style="color: #000000"> </span>
 </span>
 </pre>
-<h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9"><a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a><strong>你别<!--asdasd -->选<a href="">感兴趣</a>(/有用)的文章：</strong></h3>
-阿什杜德asdsad
-<pre>
+    <h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9">
+      <a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a>
+      <strong>你别
+        <!--asdasd -->选
+        <a href="">感兴趣</a>(/有用)的文章：</strong>
+    </h3>
+    阿什杜德asdsad
+    <pre>
 <span style="font-family: Consolas">
 <span style="color: #0000ff">&lt;!DOCTYPE </span><span style="color: #800080">html PUBLIC </span><span style="color: #000000">&quot;</span><span style="color: #800080">-</span><span style="color: #000000">//</span><span style="color: #800080">W3C</span><span style="color: #000000">//</span><span style="color: #800080">DTD XHTML 1</span><span style="color: #000000">.</span><span style="color: #800080">0 Transitional</span><span style="color: #000000">//</span><span style="color: #800080">EN</span><span style="color: #000000">&quot; &quot;</span><span style="color: #800080">http:</span><span style="color: #000000">//</span><span style="color: #800080">www</span><span style="color: #000000">.</span><span style="color: #800080">w3</span><span style="color: #000000">.</span><span style="color: #800080">org</span><span style="color: #000000">/</span><span style="color: #800080">TR</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1</span><span style="color: #000000">/</span><span style="color: #800080">DTD</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1-transitional</span><span style="color: #000000">.</span><span style="color: #800080">dtd</span><span style="color: #000000">&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
 <span style="color: #0000ff">&lt;html </span><span style="color: #800080">xmlns</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;http://www.w3.org/1999/xhtml&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
@@ -520,9 +523,14 @@
 <span style="color: #0000ff">&lt;/html&gt;</span><span style="color: #000000"> </span>
 </span>
 </pre>
-<h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9"><a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a><strong>你别<!--asdasd -->选<a href="">感兴趣</a>(/有用)的文章：</strong></h3>
-阿什杜德asdsad
-<pre>
+    <h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9">
+      <a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a>
+      <strong>你别
+        <!--asdasd -->选
+        <a href="">感兴趣</a>(/有用)的文章：</strong>
+    </h3>
+    阿什杜德asdsad
+    <pre>
 <span style="font-family: Consolas">
 <span style="color: #0000ff">&lt;!DOCTYPE </span><span style="color: #800080">html PUBLIC </span><span style="color: #000000">&quot;</span><span style="color: #800080">-</span><span style="color: #000000">//</span><span style="color: #800080">W3C</span><span style="color: #000000">//</span><span style="color: #800080">DTD XHTML 1</span><span style="color: #000000">.</span><span style="color: #800080">0 Transitional</span><span style="color: #000000">//</span><span style="color: #800080">EN</span><span style="color: #000000">&quot; &quot;</span><span style="color: #800080">http:</span><span style="color: #000000">//</span><span style="color: #800080">www</span><span style="color: #000000">.</span><span style="color: #800080">w3</span><span style="color: #000000">.</span><span style="color: #800080">org</span><span style="color: #000000">/</span><span style="color: #800080">TR</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1</span><span style="color: #000000">/</span><span style="color: #800080">DTD</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1-transitional</span><span style="color: #000000">.</span><span style="color: #800080">dtd</span><span style="color: #000000">&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
 <span style="color: #0000ff">&lt;html </span><span style="color: #800080">xmlns</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;http://www.w3.org/1999/xhtml&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
@@ -580,9 +588,14 @@
 <span style="color: #0000ff">&lt;/html&gt;</span><span style="color: #000000"> </span>
 </span>
 </pre>
-<h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9"><a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a><strong>你别<!--asdasd -->选<a href="">感兴趣</a>(/有用)的文章：</strong></h3>
-阿什杜德asdsad
-<pre>
+    <h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9">
+      <a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a>
+      <strong>你别
+        <!--asdasd -->选
+        <a href="">感兴趣</a>(/有用)的文章：</strong>
+    </h3>
+    阿什杜德asdsad
+    <pre>
 <span style="font-family: Consolas">
 <span style="color: #0000ff">&lt;!DOCTYPE </span><span style="color: #800080">html PUBLIC </span><span style="color: #000000">&quot;</span><span style="color: #800080">-</span><span style="color: #000000">//</span><span style="color: #800080">W3C</span><span style="color: #000000">//</span><span style="color: #800080">DTD XHTML 1</span><span style="color: #000000">.</span><span style="color: #800080">0 Transitional</span><span style="color: #000000">//</span><span style="color: #800080">EN</span><span style="color: #000000">&quot; &quot;</span><span style="color: #800080">http:</span><span style="color: #000000">//</span><span style="color: #800080">www</span><span style="color: #000000">.</span><span style="color: #800080">w3</span><span style="color: #000000">.</span><span style="color: #800080">org</span><span style="color: #000000">/</span><span style="color: #800080">TR</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1</span><span style="color: #000000">/</span><span style="color: #800080">DTD</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1-transitional</span><span style="color: #000000">.</span><span style="color: #800080">dtd</span><span style="color: #000000">&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
 <span style="color: #0000ff">&lt;html </span><span style="color: #800080">xmlns</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;http://www.w3.org/1999/xhtml&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
@@ -640,9 +653,14 @@
 <span style="color: #0000ff">&lt;/html&gt;</span><span style="color: #000000"> </span>
 </span>
 </pre>
-<h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9"><a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a><strong>你别<!--asdasd -->选<a href="">感兴趣</a>(/有用)的文章：</strong></h3>
-阿什杜德asdsad
-<pre>
+    <h3 id="你可能感兴趣-有用-的文章：" data-id="heading-9">
+      <a href="#你可能感兴趣-有用-的文章：" title="你可能感兴趣(/有用)的文章："></a>
+      <strong>你别
+        <!--asdasd -->选
+        <a href="">感兴趣</a>(/有用)的文章：</strong>
+    </h3>
+    阿什杜德asdsad
+    <pre>
 <span style="font-family: Consolas">
 <span style="color: #0000ff">&lt;!DOCTYPE </span><span style="color: #800080">html PUBLIC </span><span style="color: #000000">&quot;</span><span style="color: #800080">-</span><span style="color: #000000">//</span><span style="color: #800080">W3C</span><span style="color: #000000">//</span><span style="color: #800080">DTD XHTML 1</span><span style="color: #000000">.</span><span style="color: #800080">0 Transitional</span><span style="color: #000000">//</span><span style="color: #800080">EN</span><span style="color: #000000">&quot; &quot;</span><span style="color: #800080">http:</span><span style="color: #000000">//</span><span style="color: #800080">www</span><span style="color: #000000">.</span><span style="color: #800080">w3</span><span style="color: #000000">.</span><span style="color: #800080">org</span><span style="color: #000000">/</span><span style="color: #800080">TR</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1</span><span style="color: #000000">/</span><span style="color: #800080">DTD</span><span style="color: #000000">/</span><span style="color: #800080">xhtml1-transitional</span><span style="color: #000000">.</span><span style="color: #800080">dtd</span><span style="color: #000000">&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
 <span style="color: #0000ff">&lt;html </span><span style="color: #800080">xmlns</span><span style="color: #0000ff">=</span><span style="color: #ff00ff">&quot;http://www.w3.org/1999/xhtml&quot;</span><span style="color: #0000ff">&gt;</span><span style="color: #000000"> </span>
@@ -700,8 +718,14 @@
 <span style="color: #0000ff">&lt;/html&gt;</span><span style="color: #000000"> </span>
 </span>
 </pre>
+
+
+
+
+=====================================================================================================
 </div>
 
 
 </body>
+
 </html>
