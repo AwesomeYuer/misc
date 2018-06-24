@@ -106,14 +106,16 @@
             $results.removeClass(currentClass);
             if ($current.length) {
               $current.addClass(currentClass);
-              position = $current.offset().top - offsetTop + 500;
-              window.scrollTo(0, position);
+              position = $current.offset().top - offsetTop;
+              //window.scrollTo(0, position);
+              $current.parent()[0].scrollIntoView();
             }
           }
         }
 
         function jumpToBookmark() {
           currentIndex = 1;
+          var bookmarkedElement;
           while (1 == 1) {
             if ($results.length) {
               currentIndex += 1
@@ -131,6 +133,7 @@
                 position = $current.offset().top - offsetTop;
                 //debugger;
                 if ($current.parent()[0].tagName == "BOOKMARK") {
+                  bookmarkedElement = $current.parent()[0];
                   break;
                 }
               }
@@ -139,7 +142,8 @@
               }
             }
           }
-          window.scrollTo(0, position);
+          // window.scrollTo(0, position);
+          bookmarkedElement.scrollIntoView();
           alert("选中的命中序号:" + currentIndex);
         }
 
