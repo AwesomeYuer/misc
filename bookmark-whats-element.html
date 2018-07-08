@@ -67,6 +67,19 @@
     双击元素收藏书签:
     <input type="text" id="currentElement" style="width:500px" />
     <input type="button" id="jump" value="Jump" onclick="Jump()" />
+    <br/>
+    Console 执行,显示边框:
+    <span style="font-family: Consolas">
+        <span style="color: #000000">[].forEach.</span><span style="color: #000080">call</span><span style="color: #000000">($$(</span><span style="color: #ff00ff">&quot;*&quot;</span><span style="color: #000000">),</span><span style="color: #0000ff">function</span><span style="color: #000000">(a){ a.style.</span><span style="color: #008080">outline</span><span style="color: #000000">=</span><span style="color: #ff00ff">&quot;1px solid #&quot;</span><span style="color: #000000">+(~~(</span><span style="color: #ff0000">Math</span><span style="color: #000000">.</span><span style="color: #000080">random</span><span style="color: #000000">()*(1&lt;&lt;24))).</span><span style="color: #000080">toString</span><span style="color: #000000">(16); });</span>
+    </span>
+    <br />
+    Console 执行,显示背景:
+    <span style="font-family: Consolas">    
+        <span style="color: #000000">[].forEach.</span><span style="color: #000080">call</span><span style="color: #000000">( $$(</span><span style="color: #ff00ff">'*'</span><span style="color: #000000">), </span><span style="color: #0000ff">function</span><span style="color: #000000">( element ) { </span><span style="color: #008000">/* 在这里修改颜色 */ </span><span style="color: #000000">element.style.</span><span style="color: #008080">backgroundColor</span><span style="color: #000000">=</span><span style="color: #ff00ff">&quot;#&quot;</span><span style="color: #000000">+(~~(</span><span style="color: #ff0000">Math</span><span style="color: #000000">.</span><span style="color: #000080">random</span><span style="color: #000000">()*(1&lt;&lt;24))).</span><span style="color: #000080">toString</span><span style="color: #000000">(16);});</span>
+    </span>
+    
+        
+
   </div>
     
   <pre>
