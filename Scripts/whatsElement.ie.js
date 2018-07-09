@@ -196,8 +196,8 @@
         }
         //location by parent
         if (!result.wid) {
-            var parentQueryResult = whatsElement.prototype.getUniqueId(element.parentNode, true),
-                parentQueryString = parentQueryResult.wid;
+            var parentQueryResult = whatsElement.prototype.getUniqueId(element.parentNode, true);
+            var parentQueryString = parentQueryResult.wid;
             if (!parentQueryString) {
                 return;
             }
@@ -205,8 +205,8 @@
             if (className) {
                 targetQuery += className;
             }
-            var queryString = parentQueryString + ">" + targetQuery,
-                queryElements = document.querySelectorAll(queryString);
+            var queryString = parentQueryString + ">" + targetQuery;
+            var queryElements = document.querySelectorAll(queryString);
             if (queryElements.length > 1) {
                 queryString = null;
                 var index = null;
@@ -249,7 +249,7 @@
             e.stopPropagation();
         })
 
-        var deleteButton = createElement("div", deleteID)
+        var deleteButton = createElement("div", deleteID);
         deleteButton.innerText = 'x';
         deleteButton.onclick = function (e) {
             e.stopPropagation();
