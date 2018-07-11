@@ -39,30 +39,70 @@
   </style>
   <script type="text/javascript">
   
-  var whats = new whatsElement({draw:true});
-  document.addEventListener('dblclick', function(event) {
-     var target = event.target;
-     var result = whats.getUniqueId(target);//当 getUniqueId()参数为空时候，默认计算鼠标点击到的最后一个HTML元素。
-     console.log(result.type + ":" + result.wid);
-     document.getElementById("currentElement").value = JSON.stringify(result);
-  });
+  //for support IE9 by Microshaoft
+  if (!("classList" in document.documentElement)) {
+        Object.defineProperty(HTMLElement.prototype, 'classList', {
+            get: function() {
+                var self = this;
+                function update(fn) {
+                    return function(value) {
+                        var classes = self.className.split(/\s+/g),
+                            index = classes.indexOf(value);
 
-  function Jump()
-  {
-    var target = JSON.parse(document.getElementById("currentElement").value);
-    var e = whats.getTarget(target.wid);
-    console.log("Jump:" + target.wid);
-    e.scrollIntoView();
-  }
+                        fn(classes, index, value);
+                        self.className = classes.join(" ");
+                    }
+                }
+
+                return {
+                    add: update(function(classes, index, value) {
+                        if (!~index) classes.push(value);
+                    }),
+
+                    remove: update(function(classes, index) {
+                        if (~index) classes.splice(index, 1);
+                    }),
+
+                    toggle: update(function(classes, index, value) {
+                        if (~index)
+                            classes.splice(index, 1);
+                        else
+                            classes.push(value);
+                    }),
+
+                    contains: function(value) {
+                        return !!~self.className.split(/\s+/g).indexOf(value);
+                    },
+
+                    item: function(i) {
+                        return self.className.split(/\s+/g)[i] || null;
+                    }
+                };
+            }
+        });
+    }
+
+
+    var whats = new whatsElement({draw:true});
+    document.addEventListener('dblclick', function(event) {
+        var target = event.target;
+        var result = whats.getUniqueId(target);//当 getUniqueId()参数为空时候，默认计算鼠标点击到的最后一个HTML元素。
+        console.log(result.type + ":" + result.wid);
+        document.getElementById("currentElement").value = JSON.stringify(result);
+    });
+
+    function Jump() {
+        var target = JSON.parse(document.getElementById("currentElement").value);
+        var e = whats.getTarget(target.wid);
+        console.log("Jump:" + target.wid);
+        e.scrollIntoView();
+    }
   </script>
 
 </head>
 
 <body>
   <!-- <input type="text" id="keyWord" name="" /><input type="button" value="mark" accesskey="m" onclick="mark();" /> -->
-
-
-
   <div class="footer">
     双击元素收藏书签:
     <input type="text" id="currentElement" style="width:500px" />
