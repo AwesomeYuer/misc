@@ -37,20 +37,19 @@
       margin-top: 50px;
     }
   </style>
-  <script type="text/javascript">
+    <script type="text/javascript">
+
+    HTMLElement.prototype.wrap = function (wrapper) {
+        this.parentNode.insertBefore(wrapper, this);
+        wrapper.appendChild(this);
+    }
+
+
     function getNodeOrderPath(node) {
         var path = [];
         while (node.tagName.toLowerCase() != "body") {
             var index = 0;
-            // var parentNode = element.parentNode; 
-            // var length = parentNode.childNodes.length;
-            // for (var j = 0; j < length; j++) {
-            //     if (parentNode.childNodes[j] === element) {
-            //         index = j + 1;
-            //         break;
-            //     }
-            // }
-            while( (node.previousSibling) != null ) {
+             while((node.previousSibling) != null) {
                 node = node.previousSibling;
                 index ++;
             }
@@ -71,13 +70,14 @@
         var path = getNodeOrderPath(element);
         console.log(path);
         var node = getNodeByOrderPath(path);
-        
-
         alert(element === node);
         if (element === node) {
             node.scrollIntoView();
         }
         
+        var wrapper = document.createElement("mark");
+        node.wrap(wrapper);
+
 
         console.log(element.innerHTML);
         console.log(node.innerHTML);
