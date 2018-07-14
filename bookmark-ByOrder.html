@@ -39,15 +39,25 @@
   </style>
     <script type="text/javascript">
 
-    HTMLElement.prototype.wrap = function (wrapper) {
+    Node.prototype.wrap = function (wrapper, onlyOnce) {
+        var once = true;
+        if (onlyOnce != null) {
+            once = onlyOnce;
+
+        }
+        if (once) {
+            if (wrapper.tagName.toLowerCase() == this.parentNode.tagName.toLowerCase() ){
+                return;
+            }
+        }
         this.parentNode.insertBefore(wrapper, this);
         wrapper.appendChild(this);
+        
     }
-
 
     function getNodeOrderPath(node) {
         var path = [];
-        while (node.tagName.toLowerCase() != "body") {
+        while (1 == 1) {
             var index = 0;
              while((node.previousSibling) != null) {
                 node = node.previousSibling;
@@ -55,6 +65,11 @@
             }
             path.unshift(index);
             node = node.parentNode;
+            if (node.nodeType == 1) {
+                if (node.tagName.toLowerCase() == "body") {
+                        break;
+                }
+            }
         }
         return path;
     }
@@ -65,30 +80,34 @@
         }
         return node;
     }
+    function Jump() {
+        var path = JSON.parse(document.getElementById("currentElement").value);
+        var node = getNodeByOrderPath(path);
+        node.scrollIntoView();
+        
+    }
     document.addEventListener('dblclick', function(event) {
         var element = event.target;
+
+        element = document.getSelection().anchorNode;
         var path = getNodeOrderPath(element);
+        document.getElementById("currentElement").value = JSON.stringify(path);
         console.log(path);
         var node = getNodeByOrderPath(path);
         alert(element === node);
         if (element === node) {
-            node.scrollIntoView();
+            //node.scrollIntoView();
         }
-        
-        var wrapper = document.createElement("mark");
-        node.wrap(wrapper);
-
+        if (node.parentNode.tagName.toLowerCase() != "mark" ) {
+            var wrapper = document.createElement("mark");
+            node.wrap(wrapper);
+        }
 
         console.log(element.innerHTML);
         console.log(node.innerHTML);
     });
 
-    // function Jump() {
-    //     var target = JSON.parse(document.getElementById("currentElement").value);
-    //     var e = whats.getTarget(target.wid);
-    //     console.log("Jump:" + target.wid);
-    //     e.scrollIntoView();
-    // }
+
   </script>
 
 </head>
