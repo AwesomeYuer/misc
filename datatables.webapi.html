@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <!-- <link rel="stylesheet" type="text/css" href="Scripts/datatables/DataTables-1.10.18/css/jquery.dataTables.css" />
+    <script src="Scripts/jQuery/jquery-3.3.1.js"></script>
+
+    <script type="text/javascript" src="Scripts/datatables/DataTables-1.10.18/js/jquery.dataTables.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="Scripts/datatables.css" />
+    <script src="Scripts/datatables.js"></script>
+    <script>
+
+        $(document).ready(function () {
+           var table1 = $('#example').DataTable({
+                "processing": true,
+                "lengthChange": true,
+                "serverSide": true,
+                "pagingType": "full_numbers",
+                ajax: {
+                        url: "http://localhost:5816/api/StoreProcedureExecutor/zsp_GetDatesAfter",
+                        data: function(d) {
+                            //debugger;
+                            var pageInfo = $('#example').DataTable().page.info(); 
+                            var dd = {
+                                begindate : "2018-01-01" ,
+                                pagesize : pageInfo.length,
+                                PageNumber : Math.floor(pageInfo.start/pageInfo.length)+1,
+                                //TotalRows: pageInfo.recordsTotal
+                            };
+                            if (pageInfo.start > 0) {
+                                dd.TotalRows = pageInfo.recordsTotal;
+
+                            }
+                            return dd;
+                        },
+                        dataFilter: function(response){
+                            //debugger;
+                            var temp = JSON.parse(response);
+                            var parameters = temp.Outputs.Parameters;
+                            var result = {
+                                "recordsTotal": parameters.TotalRows,
+                                "recordsFiltered": parameters.TotalRows,
+                                "data": temp.Outputs.ResultSets[0]
+                            };
+                            return JSON.stringify(result);
+                        },
+                        dataSrc111 : function(response){
+                            
+                            return response.data;
+                        }
+                },
+                "columns": [
+                    { "data": "乘车日期" },
+                    // { "data": "hr.position" },
+                    // { "data": "contact.0" },
+                    // { "data": "contact.1" },
+                    // { "data": "hr.start_date" },
+                    // { "data": "hr.salary" }
+                ]
+            });
+            //debugger;
+            var info = table1.page.info();
+
+        });
+        //debugger;
+    </script>
+
+</head>
+
+<body>
+    <table id="example" class="display" style="width:100%">
+        <!-- <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Extn.</th>
+                <th>Start date</th>
+                <th>Salary</th>
+            </tr>
+        </thead> -->
+    </table>
+</body>
+
+</html>
