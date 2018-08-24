@@ -43,7 +43,8 @@
                             var result = {
                                 "recordsTotal": parameters.TotalRows,
                                 "recordsFiltered": parameters.TotalRows,
-                                "data": temp.Outputs.ResultSets[0]
+                                "data": temp.Outputs.ResultSets[0].Rows,
+                                "columns":temp.Outputs.ResultSets[0].Columns
                             };
                             return JSON.stringify(result);
                         },
@@ -52,14 +53,14 @@
                             return response.data;
                         }
                 },
-                "columns": [
-                    { "data": "乘车日期" },
-                    // { "data": "hr.position" },
-                    // { "data": "contact.0" },
-                    // { "data": "contact.1" },
-                    // { "data": "hr.start_date" },
-                    // { "data": "hr.salary" }
-                ]
+                // "columns": [
+                //     { "data": "乘车日期" },
+                //     // { "data": "hr.position" },
+                //     // { "data": "contact.0" },
+                //     // { "data": "contact.1" },
+                //     // { "data": "hr.start_date" },
+                //     // { "data": "hr.salary" }
+                // ]
             });
             //debugger;
             var info = table1.page.info();
