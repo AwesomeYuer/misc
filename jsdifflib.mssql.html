@@ -68,7 +68,10 @@ function GetObjectsTexts() {
     );
 }
 
+function SelectedLeft() {
+    alert(vm.SelectedItem().PostTime);
 
+}
 
 
 function diffUsingJS(viewType, baseObject, newObject) {
@@ -100,21 +103,39 @@ function diffUsingJS(viewType, baseObject, newObject) {
 <body>
 <input id="search" type="text" />
 <button onclick="GetList()">search</button>
+<button onclick="Clear()">clear</button>
         <div class="container">
                 <div class="form-group">
-                    <label>Search Result:</label>
-                    <select
-                        multiple="multiple"
-                        style="width:100%;height: 300px;"
+                    <label>Search Result:</label><br />
+                    <select size="20"
+                        style="width:40%;height: 300px;"
                         data-bind="options: Items,
-                                    optionsText: 'nameIndex',
+                                    optionsText: 'OptionText',
                                     selectedOptions: SelectedItems
                                 "
                     >
                     </select>
+                    <select size="20"
+                    style="width:40%;height: 300px;"
+                    data-bind="options: ChildrenItems,
+                                optionsText: 'OptionText',
+                                selectedOptions: SelectedChildrenItems,
+                                optionsAfterRender: SetChildItemOptionDisable"
+                            "
+                    >
+                    </select>
                 </div>
             </div>  
-
+            <div >
+                <Table width="80%">
+                    <TR>
+                        <td align="right"><button onclick="SelectedLeft()">Left</button></td>
+                        <td align="left"><button>Right</button></td>
+                            
+                            
+                    </TR>
+                </Table>          
+            </div>
 	<div class="top">
 		<strong>Context size (optional):</strong> <input type="text" id="contextSize" value="" />
     </div>
@@ -129,10 +150,38 @@ function diffUsingJS(viewType, baseObject, newObject) {
     var viewModel = function (data) {
             var self = this;
             this.Items = ko.observableArray(data);
-            this.SelectedItems =  ko.observableArray([]);
+            this.SelectedItems = ko.observable([]);
+            this.SelectedItem = ko.computed(function() {
+                    return this.SelectedItems()[0];
+                }, this);
+            this.ChildrenItems = ko.computed(function() {
+                    return this.Items().filter(function(x){
+                        var r = false;
+                        r = self.SelectedItem() != undefined;
+                        if (r) {
+                            var xx = self.SelectedItem();
+                            x.DisableAsChild(x.ID == xx.ID);
+                            r = (x.ObjectName == xx.ObjectName);
+                        }
+                        return  r ;
+                    })
+                }, this);
+            this.SelectedChildrenItems = ko.observable([]);
+            this.SelectedChildItem = ko.computed(function() {
+                    return this.SelectedChildrenItems()[0];
+                }, this);
+            this.SetChildItemOptionDisable = function(option, item) {
+                    ko.applyBindingsToNode(option, {disable: item.DisableAsChild}, item);
+                }
+        
+
         };
         var vm = new viewModel([]);
         ko.applyBindings(vm);
+        
+        function Clear() {
+            vm.Items.removeAll();
+        }
 
         function GetList() {
             //jsonp cross domain
@@ -142,12 +191,19 @@ function diffUsingJS(viewType, baseObject, newObject) {
                 url
                 , function (data) {
                     //alert(data);
-                        vm.Items.removeAll();
+                        //vm.Items.removeAll();
                         $.each(data, function (i, item) {
-                            item.nameIndex = item.ObjectName + ' @ ' + item.PostTime + ' => ' + item.HostName;
-                            vm.Items.push(item);
-                        }
-                    );
+                                    var items = vm.Items;
+                                    var found = items.find(function(x){
+                                            return x.ID == item.ID;
+                                        });
+                                    if (found != undefined){
+                                        item.OptionText = item.ObjectName + '(' + item.ID +')' + ' @ ' + item.PostTime + ' => ' + item.HostName;
+                                        item.DisableAsChild = ko.observable(false);
+                                        vm.Items.push(item);
+                                    }
+                                }
+                            );
                 }
             );
         }
