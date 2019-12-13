@@ -84,7 +84,7 @@
     "es6-object-assign": "^1.1.0",
     "iconv-lite": "^0.4.13",
     "jsonfile": "^2.2.3",
-    "npm": "^6.2.0",
+    "npm": "^6.13.4",
     "object-assign": "^4.1.1",
     "uuid": "^3.0.1"
   }
