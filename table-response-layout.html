@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="Generator" content="EditPlus®,Microshaoft">
+	<meta name="Author" content="EditPlus®,Microshaoft">
+	<meta name="Keywords" content="EditPlus®,Microshaoft">
+	<meta name="Description" content="EditPlus®,Microshaoft">
+	<title>Document</title>
+	<style>
+		table {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
+
+table tr {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: .35em;
+}
+
+table th,
+table td {
+  padding: .625em;
+  text-align: center;
+}
+
+table th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 1.3em;
+  }
+  
+  table thead {
+    display: none;
+  }
+  
+  table tr {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  table td {
+    position: relative;
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+  
+  table td::before {
+    /*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+    position: absolute;
+    left: 10px;
+    content: attr(data-label);
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+
+	</style>
+</head>
+<body>
+<table border="1">
+  <caption>Lorem ipsum !</caption>
+  <thead>
+    <tr>
+      <th>Account</th>
+      <th>Due Date</th>
+      <th>Amount</th>
+      <th>Period</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td data-label="Account">Visa - 3412</td>
+      <td data-label="Due Date">04/01/2016</td>
+      <td data-label="Amount">$1,190</td>
+      <td data-label="Period">03/01/2016 - 03/31/2016</td>
+    </tr>
+    <tr>
+      <td scope="row" data-label="Account">Visa - 6076</td>
+      <td data-label="Due Date">03/01/2016</td>
+      <td data-label="Amount">$2,443</td>
+      <td data-label="Period">02/01/2016 - 02/29/2016</td>
+    </tr>
+    <tr>
+      <td scope="row" data-label="Account">Visa - 7799</td>
+      <td data-label="Due Date">03/01/2016</td>
+      <td data-label="Amount">$1,181</td>
+      <td data-label="Period">02/01/2016 - 02/29/2016</td>
+    </tr>
+    <tr>
+      <td scope="row" data-label="Acount">Visa - 3412</td>
+      <td data-label="Due Date">02/01/2016</td>
+      <td data-label="Amount">$842</td>
+      <td data-label="Period">01/01/2016 - 01/31/2016</td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
