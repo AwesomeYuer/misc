@@ -78,7 +78,7 @@
   },
   "devDependencies": {
     "typescript": "^1.6.2",
-    "vscode": "0.10.x"
+    "vscode": "1.1.x"
   },
   "dependencies": {
     "es6-object-assign": "^1.1.0",
