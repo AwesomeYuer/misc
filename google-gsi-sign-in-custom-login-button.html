@@ -81,29 +81,29 @@
         });
 
         const createFakeGoogleWrapper = () => {
-        const googleLoginWrapper = document.createElement("div");
-        // Or you can simple hide it in CSS rule for custom-google-button
-        //googleLoginWrapper.style.display = "none";
-        //googleLoginWrapper.classList.add("custom-google-button");
+            const googleLoginWrapper = document.createElement("div");
+            // Or you can simple hide it in CSS rule for custom-google-button
+            
+            //googleLoginWrapper.style.display = "none";
+            
+            // Add the wrapper to body
+            document.body.appendChild(googleLoginWrapper);
+            
+            // Use GSI javascript api to render the button inside our wrapper
+            // You can ignore the properties because this button will not appear
+            google.accounts.id.renderButton(googleLoginWrapper, {
+                // type: "icon",
+                // width: "200",
+            });
 
-        // Add the wrapper to body
-        document.body.appendChild(googleLoginWrapper);
-        
-        // Use GSI javascript api to render the button inside our wrapper
-        // You can ignore the properties because this button will not appear
-        google.accounts.id.renderButton(googleLoginWrapper, {
-            // type: "icon",
-            // width: "200",
-        });
+            const googleLoginWrapperButton =
+                googleLoginWrapper.querySelector("div[role=button]");
 
-        const googleLoginWrapperButton =
-            googleLoginWrapper.querySelector("div[role=button]");
-
-        return {
-                click: () => {
-                    googleLoginWrapperButton.click();
-                },
-            };
+            return {
+                        click: () => {
+                            googleLoginWrapperButton.click();
+                        }
+                };
         };
 
         // Now we have a wrapper to click
