@@ -13,6 +13,7 @@
     <div onclick="handleGoogleLogin()">
         Login with new Google Sign-in
     </div>
+    
     <br />
     <br />
     <br />
@@ -29,14 +30,10 @@
             return JSON.parse(jsonPayload);
         }
 
-
-        const googleLoginCallback = (response) => {
+        const googleSignedInCallback = (response) => {
             // handle JWT token inside response...
             // https://developers.google.com/identity/gsi/web/guides/handle-credential-responses-js-functions#handle_credential_response
-
-
             var r = parseJwt(response.credential);
-
             alert(JSON.stringify(r, null, 2));
         };
 
@@ -44,7 +41,7 @@
         google.accounts.id.initialize({
             client_id: "944301045116-usq3bf0h2algmn9g39gp34qobs82171v.apps.googleusercontent.com",
             ux_mode: "popup",
-            callback: googleLoginCallback,
+            callback: googleSignedInCallback,
         });
 
         const createFakeGoogleWrapper = () => {
