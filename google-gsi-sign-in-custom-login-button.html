@@ -35,6 +35,10 @@
             // https://developers.google.com/identity/gsi/web/guides/handle-credential-responses-js-functions#handle_credential_response
             var r = parseJwt(response.credential);
             alert(JSON.stringify(r, null, 2));
+
+            document.getElementById("output").innerHTML = "<pre>" +  JSON.stringify(r, null, 2) + "</pre>";
+
+
         };
 
         // https://developers.google.com/identity/gsi/web/reference/js-reference#IdConfiguration
@@ -81,6 +85,12 @@
         };
 
     </script>
+
+    <div id="output">
+
+
+    </div>
+
 
 </body>
 </html>
