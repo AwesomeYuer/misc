@@ -21,7 +21,7 @@
 
     <script>
 
-        function parseJwt (token) {
+        function jwtParse (token) {
             var base64Url = token.split('.')[1];
             var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
             var json = decodeURIComponent(atob(base64).split('').map(function(c) {
@@ -51,7 +51,7 @@
         const googleSignedInCallback = (response) => {
             // handle JWT token inside response...
             // https://developers.google.com/identity/gsi/web/guides/handle-credential-responses-js-functions#handle_credential_response
-            var r = parseJwt(response.credential);
+            var r = jwtParse(response.credential);
 
             alert(JSON.stringify(r, null, 2));
 
