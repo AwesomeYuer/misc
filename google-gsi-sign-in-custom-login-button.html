@@ -64,7 +64,7 @@
             var now = new Date();
 
             var preElement = document.createElement("pre");
-            preElement.innerText = "\\\\ (" + id.toString() + ") @" + getDatabaseDateTime(now) + "\n" + JSON.stringify(r, null, 2);
+            preElement.innerText = "// (" + id.toString() + ") @" + getDatabaseDateTime(now) + "\n" + JSON.stringify(r, null, 2);
 
             var div = document.getElementById("output");
 
