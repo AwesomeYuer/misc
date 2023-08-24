@@ -53,7 +53,7 @@
             return `${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}:${p.second}`;
         }
 
-        const googleSignedInCallback = (response) => {
+        const googleSignedInProcess = (response) => {
             // handle JWT token inside response...
             // https://developers.google.com/identity/gsi/web/guides/handle-credential-responses-js-functions#handle_credential_response
             var r = jwtParse(response.credential);
@@ -83,7 +83,7 @@
         google.accounts.id.initialize({
             client_id: "944301045116-usq3bf0h2algmn9g39gp34qobs82171v.apps.googleusercontent.com",
             ux_mode: "popup",
-            callback: googleSignedInCallback,
+            callback: googleSignedInProcess,
         });
 
         const createFakeGoogleWrapper = () => {
