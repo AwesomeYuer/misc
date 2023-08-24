@@ -30,7 +30,6 @@
             return JSON.parse(json);
         }
 
-
         function getDatabaseDateTime(date) {
             const p = new Intl.DateTimeFormat('en', {
                 year:'numeric',
@@ -64,14 +63,13 @@
             var now = new Date();
 
             var preElement = document.createElement("pre");
-            preElement.innerText = "// (" + id.toString() + ") @" + getDatabaseDateTime(now) + "\n" + JSON.stringify(r, null, 2);
+
+            preElement.innerText = `// (${id.toString()}) @ ${getDatabaseDateTime(now)}\n` + JSON.stringify(r, null, 2);
 
             var div = document.getElementById("output");
 
             var firstChildPreElement = div.firstChild;
             div.insertBefore(preElement, firstChildPreElement);
-
-
 
         };
 
@@ -102,10 +100,10 @@
             googleLoginWrapper.querySelector("div[role=button]");
 
         return {
-            click: () => {
-                googleLoginWrapperButton.click();
-            },
-        };
+                click: () => {
+                    googleLoginWrapperButton.click();
+                },
+            };
         };
 
         // Now we have a wrapper to click
@@ -121,10 +119,8 @@
     </script>
 
     <div id="output">
-
-
+        <!-- placeholder -->
     </div>
-
 
 </body>
 </html>
